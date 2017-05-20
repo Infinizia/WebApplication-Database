@@ -1,0 +1,152 @@
+(function() {
+	'use strict';
+	angular.module('fabflixApp')
+		.controller('browseCtrl', browseCtrl);
+<<<<<<< HEAD
+	browseCtrl.$inject = ['$scope', '$http', 'shoppingCartSvc', '$rootScope'];
+	
+	function browseCtrl($scope, $http, shoppingCartSvc, $rootScope) {
+		var vm = this;
+		$scope.init = function(){
+//			if(data){
+//				$scope.filters = data.filters;
+//			}
+=======
+	browseCtrl.$inject = ['$scope', '$http', 'shoppingCartSvc'];
+	
+	function browseCtrl($scope, $http, shoppingCartSvc) {
+		var vm = this;
+		$scope.init = function(){
+>>>>>>> 540cd45433c5ebf4f1a4058df44fe587f390ea6c
+			$scope.page=['Show All',10,20,50];
+			$scope.page = [
+			    { name: 'Show All', value: 1000 },
+			    { name: '10', value: 10 },
+			    { name: '20', value: 20 },
+			    { name: '50', value: 50 },
+			];
+			$scope.filterTitleList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+									  'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+									  'W', 'X', 'Y', 'Z'];
+		
+			$scope.Search();
+		};
+
+		$scope.ResetPages = function(){
+			$scope.pageVal = [];
+	    	var maxPage = Math.ceil($scope.resultCount/$scope.filters.pageLength);
+	    	for(var i=0; i<maxPage; i++){$scope.pageVal.push(i+1);}
+		}
+		$scope.GetNextPage = function (page){
+			if(page >= 1 && page <= $scope.pageVal.length){
+				$scope.filters.currentPage = page;
+				$http({
+					 method: 'GET',
+					 url: 'Page',
+					 headers: {'Content-Type': 'application/json'},
+					 params:{
+						 'filter':$scope.filters
+					 }
+			    }).then(function(data){
+			    	if(data){
+			    		$scope.ResetPages();
+				    	$scope.movieList = data.data;
+			    	}
+				});
+			}
+		}
+		$scope.RefreshPage = function(){
+			$scope.filters.currentPage = 1;
+			$scope.GetNextPage($scope.filters.currentPage);
+		}
+		$scope.Search = function(){
+			$http({
+				 method: 'GET',
+				 url: 'Search',
+				 headers: {'Content-Type': 'application/json'},
+				 params:{
+					 'filter':$scope.filters
+				 }
+		    }).then(function(data){
+		    	if(data){
+		    		var selectVal = {'name':'All', 'id': -1};
+		    		$scope.pagePosition = 1;
+		    		$scope.genreList = data.data.genreList;
+		    		$scope.genreList.unshift(selectVal);
+			    	$scope.movieList = data.data.movieList;
+			    	$scope.filters = data.data.filters;
+			    	$scope.filters.currentPage = 1;
+			    	$scope.resultCount = data.data.movieCount;
+			    	$scope.ResetPages();
+		    	}
+			});
+		}
+		$scope.SearchTitle = function(word, type){
+			$scope.filters.searchWord = word;
+			$scope.filters.type = type;
+			$scope.Search();
+		}
+		$scope.ReOrderMovie = function(type){
+			if(type != $scope.filters.orderBy){
+				$scope.filters.orderBy = type;
+				$scope.filters.isDesc = true;
+			}
+			else{
+				$scope.filters.isDesc = !$scope.filters.isDesc;
+			}
+			$scope.filters.currentPage = 1;
+			$http({
+				 method: 'GET',
+				 url: 'Sort',
+				 headers: {'Content-Type': 'application/json'},
+				 params:{
+					 'filter':$scope.filters
+				 }
+				
+		    }).then(function(data){
+		    	if(data){
+		    		$scope.movieList = data.data;
+		    	}
+			});
+		}
+		$scope.init();
+		$scope.$on('refresh',function(){
+			$scope.Search();
+		});
+		
+		$scope.reloadCtrl = function(){
+			console.log('reloading...');
+			$route.reload();
+		}
+		
+		window.onbeforeunload = function(event) {
+			event.preventDefault();
+			userSvc.getUser(vm.form_info)
+			.then(function(user){
+				if(user != null){
+					console.log(user);
+					$rootScope.globals = {user: user};
+					$location.path('/DisplayResults').replace();
+				}
+			});
+			$route.reload();
+		}
+//		
+//		$rootScope.$on('$routeChangeStart', function (event, next, current) {
+//			if(!current) {
+//				userSvc.getUser(vm.form_info)
+//					.then(function(user){
+//						if(user != null){
+//							console.log(user);
+//							$rootScope.globals = {user: user};
+//							$location.path('/DisplayResults').replace();
+//						}
+//					});
+//			}
+//		})
+//		
+//		vm.addToCart = function (movie) {
+//			shoppingCartSvc.addToCart(movie);
+//		}
+	}
+})();

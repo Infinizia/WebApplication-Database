@@ -1,0 +1,40 @@
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<form name="creditCardForm" ng-submit="vm.checkout()" novalidate>
+					<div class="form-group">
+						<label for="first_name">First Name</label><span class="error" ng-show="creditCardForm.$submitted && creditCardForm.first_name.$error.required">Enter a first name</span>
+						<input type="text" class="form-control" name="first_name" ng-model="vm.form.first_name" required placeholder="Enter the first name on card" ng-class="{'border-red' : creditCardForm.$submitted && creditCardForm.first_name.$error.required}" />
+					</div>
+					<div class="form-group">
+						<label for="last_name">Last Name</label><span class="error" ng-show="creditCardForm.$submitted && creditCardForm.last_name.$error.required">Enter a last name</span>
+						<input type="text" class="form-control" name="last_name" ng-model="vm.form.last_name" required placeholder="Enter the last name on card" ng-class="{'border-red' : creditCardForm.$submitted && creditCardForm.last_name.$error.required}" />
+					</div>
+					<div class="form-group">
+						<label for="expiration">Address</label><span class="error" ng-show="creditCardForm.$submitted && creditCardForm.address.$error.address">Address</span>
+						<input type="text" class="form-control" name="expiration" ng-model="vm.form.address" placeholder="Please enter Address"/>
+					</div>
+					<div class="form-group">
+						<label for="id">Credit Card Number</label><span class="error" ng-show="creditCardForm.$submitted && creditCardForm.cc_id.$error.required">Enter a card number</span>
+						<input type="text" class="form-control" name="cc_id" ng-model="vm.form.cc_id" required placeholder="Enter a credit card number" ng-class="{'border-red' : creditCardForm.$submitted && creditCardForm.cc_id.$error.required}" />
+					</div>
+					<div class="form-group">
+						<label for="id">Expiration Date</label><span class="error" ng-show="(creditCardForm.$submitted && creditCardForm.expiration.$error.required) || (creditCardForm.$submitted && creditCardForm.expiration.$invalid)">Enter a date (YYYY-MM-DD)</span>
+						<input type="text" class="form-control" name="expiration" ng-model="vm.form.expiration" required ng-pattern="/\d{4}[-]{1}\d{2}[-]{1}\d{2}/" maxlength="10" placeholder="YYYY-MM-DD" ng-class="{'border-red' : (creditCardForm.$submitted && creditCardForm.expiration.$error.required) || (creditCardForm.$submitted && creditCardForm.expiration.$invalid)}" />
+					</div>
+					
+					<div class="form-group">
+						<a type="reset" class="btn btn-primary" ng-href="#ShoppingCart">Back To Cart</a>
+						<button type="reset" class="btn btn-default"  style="float: right">Clear</button>
+						<button type="submit" class="btn btn-success" style="float: right; margin-right: 10px">Purchase</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</div>
+	<div class="col-md-4"></div>
+</div>
