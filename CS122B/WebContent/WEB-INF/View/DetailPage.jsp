@@ -11,7 +11,7 @@
 	          	<td>{{vm.movieDetail.id}}</td>
 	        </tr>
 	        <tr>
-	          	<th>Title</th>
+	          	<th>hello i changes this file.</th>
 	          	<td>{{vm.movieDetail.title}}</td>
 	        </tr>
 	        <tr>
