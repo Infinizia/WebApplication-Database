@@ -5,8 +5,8 @@ import java.sql.*;
 public final class dbConnection {
 	
 	private static Connection appDbConnection = null;
-	private static String myLogin = "root";
-	private static String myPass = "nguyen";
+	private static String myLogin = "johnm";
+	private static String myPass = "asdfasdf123";
 	private static String myUrl = "jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&useSSL=false";
 	private static String driverName = "com.mysql.jdbc.Driver";
 	

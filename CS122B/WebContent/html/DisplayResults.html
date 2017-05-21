@@ -72,42 +72,46 @@
 		<div ng-if= "movieList.length == 0" class="container">
 	       	<h1>No result found</h1>
 	    </div> 
-		<table ng-if= "movieList.length != 0" id="table" class="table table-bordered table-striped">
-			<tr>
-				<th>Image</th>
-	          	<th>ID</th>
-	          	<th class="hover-style" ng-click="ReOrderMovie('title');">Title <span ng-if="filters.orderBy =='title'" ng-class="filters.isDesc ? 'glyphicon glyphicon-chevron-down' : 'glyphicon glyphicon-chevron-up'"></span></th>
-	          	<th class="hover-style" ng-click="ReOrderMovie('year');" style="min-width:100px">Year <span ng-if="filters.orderBy =='year'" ng-class="filters.isDesc ? 'glyphicon glyphicon-chevron-down' : 'glyphicon glyphicon-chevron-up'"></span></th>
-	          	<th>Director</th>
-	          	<th>Genres</th>
-	          	<th>Featured stars</th>
-	          	<th><span class = "glyphicon glyphicon-shopping-cart" ></span></th>
-	      	</tr>
-			<tbody>
-			<form>
-				<tr ng-repeat="movie in movieList">
-					<td align = "center">
-		    				<img ng-src="{{movie.banner_url}}" class="img-thumbnail" alt="Cinque Terre" width="200px" height="200px" alt= "No image"></img>
- 					</td>
-		            <td>{{movie.id}}</td>
-		            <td>
-		            	<a ng-href="#/DetailPage/{{movie.id}}/movie">{{movie.title}}</a>
-		            </td>
-		            <td>{{movie.year}}</td>
-		            <td>{{movie.director}}</td>
-		            <td>
-		            	<a ng-href="#/DisplayResults/{{g.name}}" ng-repeat="g in movie.genres">{{g.name}}<span ng-show="!$last">, </span></a>
-		            </td>
-		            <td>
-		            	<a ng-href="#/DetailPage/{{s.id}}/star" ng-repeat="s in movie.stars">{{s.first_name}} {{s.last_name}}<span ng-show="!$last">, </span></a>
-		            </td>
-		            <td>
-            			<button type="submit" class="btn btn-success" ng-click="vm.addToCart(movie)">Add to Cart</button>
-		            </td>
-				</tr>
-			</form>
-			</tbody>
-		</table>
+	    <div class="row">
+	    	<div class="col-md-12">
+    			<table ng-if= "movieList.length != 0" id="table" class="table table-bordered table-striped">
+					<tr>
+						<th>Image</th>
+			          	<th>ID</th>
+			          	<th class="hover-style" ng-click="ReOrderMovie('title');">Title <span ng-if="filters.orderBy =='title'" ng-class="filters.isDesc ? 'glyphicon glyphicon-chevron-down' : 'glyphicon glyphicon-chevron-up'"></span></th>
+			          	<th class="hover-style" ng-click="ReOrderMovie('year');" style="min-width:100px">Year <span ng-if="filters.orderBy =='year'" ng-class="filters.isDesc ? 'glyphicon glyphicon-chevron-down' : 'glyphicon glyphicon-chevron-up'"></span></th>
+			          	<th>Director</th>
+			          	<th>Genres</th>
+			          	<th>Featured stars</th>
+			          	<th><span class = "glyphicon glyphicon-shopping-cart" ></span></th>
+			      	</tr>
+					<tbody>
+					<form>
+						<tr ng-repeat="movie in movieList">
+							<td align = "center">
+				    				<img ng-src="{{movie.banner_url}}" class="img-thumbnail" alt="Cinque Terre" width="200px" height="200px" alt= "No image"></img>
+		 					</td>
+				            <td>{{movie.id}}</td>
+				            <td>
+				            	<a ng-href="#/DetailPage/{{movie.id}}/movie">{{movie.title}}</a>
+				            </td>
+				            <td>{{movie.year}}</td>
+				            <td>{{movie.director}}</td>
+				            <td>
+				            	<a ng-href="#/DisplayResults/{{g.name}}" ng-repeat="g in movie.genres">{{g.name}}<span ng-show="!$last">, </span></a>
+				            </td>
+				            <td>
+				            	<a ng-href="#/DetailPage/{{s.id}}/star" ng-repeat="s in movie.stars">{{s.first_name}} {{s.last_name}}<span ng-show="!$last">, </span></a>
+				            </td>
+				            <td>
+		            			<button type="submit" class="btn btn-success" ng-click="vm.addToCart(movie)">Add to Cart</button>
+				            </td>
+						</tr>
+					</form>
+					</tbody>
+				</table>
+	    	</div>
+	    </div>
 	</div>
 	<div align="center" ng-if= "movieList.length != 0">
 		<nav>
