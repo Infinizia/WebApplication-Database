@@ -13,7 +13,7 @@
         app:menu="@menu/drawer_menu"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_header"
-        android:id="@+id/headerView">
+        android:id="@+id/nav_menu">
 
     </android.support.design.widget.NavigationView>
 
@@ -48,16 +48,16 @@
                 <ListView
                     android:id="@+id/movieListView"
                     android:layout_width="wrap_content"
-                    android:layout_height="411dp"
-                    android:layout_weight="1.02" />
+                    android:layout_height="424dp"
+                    android:layout_weight="0.84" />
 
                 <LinearLayout
                     android:id="@+id/pagination"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:layout_weight="1.80">
+                    android:padding="5dp"
+                    android:weightSum="1">
 
                     <Button
                         android:id="@+id/previousBtn"

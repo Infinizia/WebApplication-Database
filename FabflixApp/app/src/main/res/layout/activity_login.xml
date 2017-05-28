@@ -69,6 +69,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     android:inputType="textPassword"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="@string/action_sign_in_short"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
@@ -80,8 +82,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Sign in"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
                 android:textStyle="bold" />
 
         </LinearLayout>

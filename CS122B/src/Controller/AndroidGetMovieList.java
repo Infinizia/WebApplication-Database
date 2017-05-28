@@ -48,6 +48,7 @@ public class AndroidGetMovieList extends HttpServlet {
 		List<Movie> movieList = new ArrayList<Movie>();
 		
 		movieList = movieQuery.GetAllMovies();
+		System.out.println(movieList.size());
 		ResponseService.SendJson(response, movieList);
 
 	}
