@@ -74,10 +74,9 @@ DROP TABLE IF EXISTS ft;
 CREATE TABLE ft (
     entryID INT AUTO_INCREMENT,
     entry text,
+    movieID INT,
     PRIMARY KEY (entryID),
     FULLTEXT (entry)) ENGINE=MyISAM;
-    
-DROP PROCEDURE IF EXISTS add_movie;
 DELIMITER $$
 CREATE PROCEDURE add_movie(
     new_title VARCHAR(100),
