@@ -70,7 +70,13 @@ CREATE TABLE employees (
 	password varchar(20) not null,
 	fullname varchar(100)
 );
-
+DROP TABLE IF EXISTS ft;
+CREATE TABLE ft (
+    entryID INT AUTO_INCREMENT,
+    entry text,
+    PRIMARY KEY (entryID),
+    FULLTEXT (entry)) ENGINE=MyISAM;
+    
 DROP PROCEDURE IF EXISTS add_movie;
 DELIMITER $$
 CREATE PROCEDURE add_movie(
