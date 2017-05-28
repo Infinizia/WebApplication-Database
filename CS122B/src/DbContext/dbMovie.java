@@ -59,7 +59,7 @@ public class dbMovie extends dbContext {
 	}
 	
 	public List<Movie> GetAllMovies(){
-		String selectQuery = "select * from movies m ";
+		String selectQuery = "select * from movies m group by title";
 		
 		return this.ExecuteQueryStatement(selectQuery);
 	}
