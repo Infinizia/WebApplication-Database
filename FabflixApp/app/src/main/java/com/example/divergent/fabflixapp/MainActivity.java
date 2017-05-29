@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     ListView movieListView;
     Paginator pagination;
     Button nextBtn, prevBtn;
-    int totalPages = Paginator.TOTAL_NUM_MOVIES / Paginator.MOVIES_PER_PAGE;
+    int totalPages;
     int currentPage = 0;
 
     @Override
@@ -65,13 +65,14 @@ public class MainActivity extends AppCompatActivity {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         String msg = getIntent().getStringExtra("jsonObj");
         try {
             JSONObject user = new JSONObject(msg);
             String firstName = user.getString("first_name");
             String lastName = user.getString("last_name");
             Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(this, "Welcome " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
             //do java servlet request
             MyTask getMovieList = new MyTask();
             String url = "http://174.77.47.211:8080/ICS122B/AndroidGetMovieList";
@@ -81,28 +82,43 @@ public class MainActivity extends AppCompatActivity {
             getMovie.execute(getMovieList);
 
             movieListView = (ListView)findViewById(R.id.movieListView);
+            nextBtn = (Button) findViewById(R.id.nextBtn);
+            prevBtn = (Button) findViewById(R.id.previousBtn);
 
-            //ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1);
-//            View vi = getLayoutInflater().inflate(R.layout.navigation_header,null);
-//            NavigationView navHeaderLayout = (NavigationView) mDrawerLayout.findViewById(R.id.headerView);
-//            RelativeLayout rl = (RelativeLayout) navHeaderLayout.findViewById(R.id.header);
-//            TextView welcomeMsg = (TextView) rl.findViewById(R.id.tvWelcome);
-//            welcomeMsg.append(firstName + " " + lastName);
-//            rl.addView(vi);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_menu);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem){
+                switch (menuItem.getItemId()){
+                    case(R.id.logout):
+                        Toast.makeText(MainActivity.this, "Log out Selected", Toast.LENGTH_SHORT).show();
+                        //Intent accountActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                        //startActivity(accountActivity);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
         {
-            return true;
+            int id = item.getItemId();
+            if (id == R.id.logout)
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    //Create the search bar on navigation menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -126,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //This class is used to send request to java servlet and receive response
     public class GetMovieRequest extends AsyncTask<MyTask,String,List<String>> {
 
         Context context;
@@ -194,13 +211,10 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(List<String> result) {
             super.onPostExecute(result);
             pagination = new Paginator(result);
-            totalPages = Paginator.TOTAL_NUM_MOVIES / Paginator.MOVIES_PER_PAGE;
-            currentPage = 0;
-            nextBtn = (Button) findViewById(R.id.nextBtn);
-            prevBtn = (Button) findViewById(R.id.previousBtn);
-
+            totalPages = (int)Math.ceil(Paginator.TOTAL_NUM_MOVIES / Paginator.MOVIES_PER_PAGE);
             //adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, result);
             //movieListView.setAdapter(adapter);
+            prevBtn.setEnabled(false);
             movieListView.setOnItemClickListener (new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -209,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             movieListView.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, pagination.generatePage(currentPage)));
+
 
             nextBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -240,9 +255,11 @@ public class MainActivity extends AppCompatActivity {
                 prevBtn.setEnabled(false);
                 nextBtn.setEnabled(true);
             }
-            else if (currentPage >=1 && currentPage <= 5)
+            else if (currentPage > 0 && currentPage < totalPages)
+            {
                 nextBtn.setEnabled(true);
                 prevBtn.setEnabled(true);
+            }
         }
     }
 }
