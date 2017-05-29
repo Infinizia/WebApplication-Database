@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public int currentPage = 0;
     List<String> movieList;
     MyTask getMovieList = new MyTask();
-    public String searchUrl = "http://174.77.47.211:8080/ICS122B/FullTextSearch";
-    public String getMovieListurl = "http://174.77.47.211:8080/ICS122B/AndroidGetMovieList";
+    public String searchUrl = "http://54.187.220.164:8080/ICS122B/FullTextSearch";
+    public String getMovieListurl = "http://54.187.220.164:8080/ICS122B/AndroidGetMovieList";
 
 
     @Override
@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (result.size() == 0)
             {
                 searchResultMsg.setText("No results found!");
+                prevBtn.setEnabled(false);
+                nextBtn.setEnabled(false);
                 movieListView.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, pagination.generatePage(currentPage)));
             }
             else {

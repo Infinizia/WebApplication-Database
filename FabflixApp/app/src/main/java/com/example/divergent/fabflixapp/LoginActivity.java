@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity{
 
             //do java servlet request
             MyTask loginTask = new MyTask();
-            String url = "http://174.77.47.211:8080/ICS122B/AndroidLogin";
+            String url = "http://54.187.220.164:8080/ICS122B/AndroidLogin";
             loginTask.setJsonObject(loginData);
             loginTask.setUrl(url);
 
