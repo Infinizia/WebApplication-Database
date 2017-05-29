@@ -135,10 +135,18 @@
 		    	}
 			});
 		}
+		$scope.ShowPopUp = function(id){
+			console.log(id);
+			$scope.hoverId = id;
+		}
+		$scope.HidePopUp = function(){
+			$scope.hoverId = -1;
+		}
 		$scope.init();
 		vm.addToCart = function (movie) {
 				shoppingCartSvc.addToCart(movie).then(function(){
 			});
 		}
+
 	}
 })();

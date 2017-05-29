@@ -6,6 +6,8 @@
 		cursor:pointer;
 		background-color:rgba(224, 53, 53, .5);
 	}
+	.fab-app-popup{
+	position:absolute; width:250px; height:auto;background-color:rgba(240, 242, 147, .9); z-index:1000;padding:2%;border-radius:18px; border:1px solid black}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
@@ -94,13 +96,28 @@
 		 					</td>
 				            <td>{{movie.id}}</td>
 				            <td>
-				            	<a ng-href="#/DetailPage/{{movie.id}}/movie">{{movie.title}}</a>
+				            	<a ng-href="#/DetailPage/{{movie.id}}/movie" ng-mouseenter="ShowPopUp(movie.id)">{{movie.title}}</a>
 				            	<div style="position:relative">
-									<div  style="position:absolute; width:250px; height:300px;background-color:rgba(247, 93, 106, .5);border-radius:18px">
-				            		<h1>test</h1>
+									<div class="fab-app-popup" ng-if="hoverId === movie.id" ng-mouseenter="ShowPopUp(movie.id)" ng-mouseleave="HidePopUp()">
+				            			<div class="row">
+				            				<div class="col-md-12 text-center">
+				            					<h1><u>{{movie.title}}</u></h1>
+				            				</div>
+				            			</div>
+				            			<div class="row " >
+				            				<div class="col-md-11 col-md-offset-1 text-left">
+				            					<div class="form-group">
+				            						<p><b>Year: </b>{{movie.year}}</p>
+				            						<p><b>Director: </b>{{movie.director}}</p>
+				            						<span><b>Genres: </b></span><a ng-href="#/DisplayResults/{{g.name}}" ng-repeat="g in movie.genres">{{g.name}}<span ng-show="!$last">, </span></a><br/>
+				            						<span><b>Stars: </b></span><a ng-href="#/DetailPage/{{s.id}}/star" ng-repeat="s in movie.stars">{{s.first_name}} {{s.last_name}}<span ng-show="!$last">, </span></a><br/>
+				            						<span><b>Trailer: </b></span><a ng-href="{{movie.trailer_url}}" target="_blank">{{movie.trailer_url}}</a>
+				            					</div>
+				            					<button type="submit" class="btn btn-success" ng-click="vm.addToCart(movie)" style="margin-bottom:3%;">Add to Cart</button>
+				            				</div>
+				            			</div>
 									</div>
 				            	</div>
-				            
 				            </td>
 				            <td>{{movie.year}}</td>
 				            <td>{{movie.director}}</td>
