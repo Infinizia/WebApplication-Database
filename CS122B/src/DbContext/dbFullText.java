@@ -16,7 +16,7 @@ public class dbFullText extends dbContext {
 	}
 	
 	public ArrayList<MovieTitleSearch> GetMovie(String searchTextQuery){
-		String selectQuery = String.format("select * from ft where match(entry) against('%s' in boolean mode) limit 5", searchTextQuery);
+		String selectQuery = String.format("select * from ft where match(entry) against('%s' in boolean mode)", searchTextQuery);
 		ResultSet r = super.ExecuteQuery(selectQuery);
 		ArrayList<MovieTitleSearch> movieList = new ArrayList<MovieTitleSearch>();
 		
