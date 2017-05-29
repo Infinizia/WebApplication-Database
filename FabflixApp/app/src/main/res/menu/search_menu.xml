@@ -8,6 +8,12 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always"
         ></item>
+    <item android:id="@+id/reset"
+        android:title="Reset"
+        app:showAsAction="never"></item>
+    <item android:id="@+id/action_logout"
+        android:title="Log out"
+        app:showAsAction="never"></item>
 </menu>
 
 <!--<?xml version="1.0" encoding="utf-8"?>-->

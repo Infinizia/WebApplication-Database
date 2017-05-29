@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -51,8 +52,13 @@ public class MainActivity extends AppCompatActivity {
     TextView searchResultMsg;
     Paginator pagination;
     Button nextBtn, prevBtn;
-    int totalPages;
-    int currentPage = 0;
+    public int totalPages;
+    public int currentPage = 0;
+    List<String> movieList;
+    MyTask getMovieList = new MyTask();
+    public String searchUrl = "http://174.77.47.211:8080/ICS122B/FullTextSearch";
+    public String getMovieListurl = "http://174.77.47.211:8080/ICS122B/AndroidGetMovieList";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_menu);
+        mNavigationView.setNavigationItemSelectedListener(MainActivity.this);
 
         String msg = getIntent().getStringExtra("jsonObj");
         try {
@@ -76,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             //do java servlet request
             MyTask getMovieList = new MyTask();
-            String url = "http://174.77.47.211:8080/ICS122B/AndroidGetMovieList";
-            getMovieList.setUrl(url);
+            getMovieList.setUrl(getMovieListurl);
 
             GetMovieRequest getMovie = new GetMovieRequest(this);
             getMovie.execute(getMovieList);
@@ -91,29 +97,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_menu);
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem){
-                switch (menuItem.getItemId()){
-                    case(R.id.logout):
-                        Toast.makeText(MainActivity.this, "Log out Selected", Toast.LENGTH_SHORT).show();
-                        //Intent accountActivity = new Intent(getApplicationContext(), LoginActivity.class);
-                        //startActivity(accountActivity);
-                        break;
-                }
-                return true;
-            }
-        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item))
         {
-            int id = item.getItemId();
-            if (id == R.id.logout)
-                return true;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -126,28 +116,63 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
+        MenuItem resetItem = menu.findItem(R.id.reset);
+        MenuItem logoutItem = menu.findItem(R.id.action_logout);
+
+        //Reset the activity action
+        resetItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                finish();
+                startActivity(getIntent());
+                return false;
+            }
+        });
+
+        //Log out action
+        logoutItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent goToLogin = new Intent(MainActivity.this,LoginActivity.class);
+                goToLogin.putExtra("logout",true);
+                finish();
+                startActivity(goToLogin);
+                return false;
+            }
+        });
+
+        //Search bar action
         final SearchView searchView = (SearchView)item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                MyTask getMovieList = new MyTask();
-                String url = "http://174.77.47.211:8080/ICS122B/FullTextSearch";
-                getMovieList.setUrl(url);
-                getMovieList.setSearchText(query);
-
-                GetMovieRequest getMovie = new GetMovieRequest(MainActivity.this);
-                getMovie.execute(getMovieList);
+//                currentPage = 0;
+//                getMovieList.setUrl(searchUrl);
+//                getMovieList.setSearchText(query);
+//                GetMovieRequest getMovie = new GetMovieRequest(MainActivity.this);
+//                getMovie.execute(getMovieList);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 //adapter.getFilter().filter(newText);
+                currentPage = 0;
+                getMovieList.setUrl(searchUrl);
+                getMovieList.setSearchText(newText);
+                GetMovieRequest getMovie = new GetMovieRequest(MainActivity.this);
+                getMovie.execute(getMovieList);
                 return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        return true;
     }
 
     //This class is used to send request to java servlet and receive response
@@ -227,33 +252,40 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<String> result) {
             super.onPostExecute(result);
-            pagination = new Paginator(result);
+            movieList = result;
+            pagination = new Paginator(movieList);
             if (result.size() == 0)
             {
                 searchResultMsg.setText("No results found!");
-
+                movieListView.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, pagination.generatePage(currentPage)));
             }
             else {
                 searchResultMsg.setText("Search results found!: " + result.size());
-            }
-            totalPages = (int)Math.ceil(Paginator.TOTAL_NUM_MOVIES / Paginator.MOVIES_PER_PAGE);
+                totalPages = (int)Math.ceil(Paginator.TOTAL_NUM_MOVIES / Paginator.MOVIES_PER_PAGE);
 
-            //adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, result);
-            //movieListView.setAdapter(adapter);
-
-            prevBtn.setEnabled(false);
-            if (result.size() < Paginator.MOVIES_PER_PAGE)
-                nextBtn.setEnabled(false);
-            movieListView.setOnItemClickListener (new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(MainActivity.this,pagination.generatePage(currentPage).get(i),Toast.LENGTH_SHORT).show();
+                //adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, result);
+                //movieListView.setAdapter(adapter);
+                if (totalPages > 0)
+                    toggleButton();
+                else {
+                    prevBtn.setEnabled(false);
+                    nextBtn.setEnabled(false);
                 }
-            });
 
-            movieListView.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, pagination.generatePage(currentPage)));
+                //If a movie is selected display the movie as a toast
+                movieListView.setOnItemClickListener (new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Toast.makeText(MainActivity.this,pagination.generatePage(currentPage).get(i),Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+                //Show all the movie in the list
+                movieListView.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, pagination.generatePage(currentPage)));
 
+            }
+
+            //Next and previous button click
             nextBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -274,13 +306,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //Disable or enable the next and previous button
         private void toggleButton(){
             if (currentPage == totalPages)
             {
                 nextBtn.setEnabled(false);
                 prevBtn.setEnabled(true);
             }
-            else if (currentPage == 0)
+            else if (currentPage == 0 || movieList.size() <= Paginator.MOVIES_PER_PAGE)
             {
                 prevBtn.setEnabled(false);
                 nextBtn.setEnabled(true);
