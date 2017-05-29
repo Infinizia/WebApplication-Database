@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     ArrayAdapter<String> adapter;
     ListView movieListView;
+    TextView searchResultMsg;
     Paginator pagination;
     Button nextBtn, prevBtn;
     int totalPages;
@@ -71,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             JSONObject user = new JSONObject(msg);
             String firstName = user.getString("first_name");
             String lastName = user.getString("last_name");
-            Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Welcome " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Login Successful, Welcome " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
+
             //do java servlet request
             MyTask getMovieList = new MyTask();
             String url = "http://174.77.47.211:8080/ICS122B/AndroidGetMovieList";
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             movieListView = (ListView)findViewById(R.id.movieListView);
             nextBtn = (Button) findViewById(R.id.nextBtn);
             prevBtn = (Button) findViewById(R.id.previousBtn);
+            searchResultMsg = (TextView) findViewById(R.id.searchResult);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,18 +126,24 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
-        SearchView searchView = (SearchView)item.getActionView();
+        final SearchView searchView = (SearchView)item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                MyTask getMovieList = new MyTask();
+                String url = "http://174.77.47.211:8080/ICS122B/FullTextSearch";
+                getMovieList.setUrl(url);
+                getMovieList.setSearchText(query);
+
+                GetMovieRequest getMovie = new GetMovieRequest(MainActivity.this);
+                getMovie.execute(getMovieList);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-
+                //adapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -163,6 +171,15 @@ public class MainActivity extends AppCompatActivity {
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setUseCaches(false);
                 connection.setDoOutput(true);
+                if (currentTask.getSearchText() != null)
+                {
+                    connection.setDoInput(true);
+                    OutputStream os = connection.getOutputStream();
+                    OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+                    osw.write(currentTask.getSearchText());
+                    osw.flush();
+                    osw.close();
+                }
 
                 //Receive response
                 InputStream is = connection.getInputStream();
@@ -211,10 +228,22 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(List<String> result) {
             super.onPostExecute(result);
             pagination = new Paginator(result);
+            if (result.size() == 0)
+            {
+                searchResultMsg.setText("No results found!");
+
+            }
+            else {
+                searchResultMsg.setText("Search results found!: " + result.size());
+            }
             totalPages = (int)Math.ceil(Paginator.TOTAL_NUM_MOVIES / Paginator.MOVIES_PER_PAGE);
+
             //adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, result);
             //movieListView.setAdapter(adapter);
+
             prevBtn.setEnabled(false);
+            if (result.size() < Paginator.MOVIES_PER_PAGE)
+                nextBtn.setEnabled(false);
             movieListView.setOnItemClickListener (new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -242,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
                     toggleButton();
                 }
             });
+
         }
 
         private void toggleButton(){
