@@ -7,9 +7,9 @@
 	
 	function fullTextCtrl($scope, $http, shoppingCartSvc, $routeParams) {
 		$scope.searchText = "";
-		
+		$scope.freeTextResult = [];
 		$scope.GetText = function(){
-			if($scope.searchText != "" && $scope.searchText.length > 3 && $scope.searchText.trim() != ""){
+			if($scope.searchText != undefined && $scope.searchText != "" && $scope.searchText.length > 1 && $scope.searchText.trim() != ""){
 				$http({
 					 method: 'GET',
 					 url: 'FullTextSearch',
@@ -18,9 +18,17 @@
 						 'searchText':$scope.searchText
 					 }
 			    }).then(function(data){
-			    	console.log(data.data);
+			    	$scope.freeTextResult = data.data;
 				});
 			}
+			else{
+				$scope.freeTextResult = [];
+			}
 		};
+		$scope.reset = function(val){
+			$scope.freeTextResult = [];
+			if(val)
+				$scope.searchText = val;
+		}
 	}
 })();

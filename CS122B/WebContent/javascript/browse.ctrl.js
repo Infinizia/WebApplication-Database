@@ -8,12 +8,19 @@
 		var vm = this;
 		
 		$scope.init = function(){
-			console.log('heroo');
 			if($routeParams.genre){
-				console.log('test!');
 				$scope.filters = {};
 				$scope.filters.genre = $routeParams.genre;
 			}
+			if($routeParams.title){
+				if(!$scope.filters){
+					$scope.filters = {};
+				}
+				$scope.filters.searchWord = $routeParams.title;
+				$scope.filters.type = 'title';
+
+			}
+			
 			$scope.page=['Show All',10,20,50];
 			$scope.page = [
 			    { name: 'Show All', value: 1000 },
@@ -80,6 +87,7 @@
 			    	$scope.filters = data.data.filters;
 			    	$scope.resultCount = data.data.movieCount;
 			    	$scope.ResetPages();
+			    	$scope.currtype = $scope.filters.type;
 		    	}
 			});
 		}

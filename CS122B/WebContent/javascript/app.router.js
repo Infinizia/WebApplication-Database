@@ -29,6 +29,11 @@
 		    		}
 		    	}
 		    })
+		    .when('/DisplayResultsT/:title?', {
+		    	templateUrl: "html/DisplayResults.html",
+		    	controller: "browseCtrl",
+		    	controllerAs: 'vm',
+		    })
 		    .when('/DisplayResults/:genre?', {
 		    	templateUrl: "html/DisplayResults.html",
 		    	controller: "browseCtrl",

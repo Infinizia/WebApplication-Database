@@ -13,7 +13,7 @@
 	<div class="row" style="margin-top:10px"> 
 		<ol class="breadcrumb text-center" >
 			  <li>Browse by title</li>
-			  <li class="breadcrumb-item" ng-repeat="c in filterTitleList" ng-class="{'active' :  filters.searchWord.toLowerCase() == c.toLowerCase()}">
+			  <li class="breadcrumb-item" ng-repeat="c in filterTitleList" ng-class="{'active' :  filters.searchWord.toLowerCase() == c.toLowerCase() && currtype == 'start_title'}">
 			  	<a href="#/DisplayResults" ng-click="SearchTitle(c, 'start_title')">{{c}}</a>
 			  </li>	  	  	  	  
 		</ol>
@@ -32,7 +32,7 @@
 			<div class="col-md-2">
 		        <div class="form-group">
 		        	<label for="searchWord">Search:</label>
-		          <input type="text" name="searchWord" required class="form-control" ng-model="filters.searchWord" placeholder="Search">
+		          <input type="text" name="searchWord" required class="form-control" ng-model="filters.searchWord" placeholder="Search Title">
 		        </div>
 		        
 			</div>

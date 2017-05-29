@@ -43,7 +43,6 @@
 	    font-weight: 400;
 	    line-height: 1.42857143;
 	    color: #333;
-	    white-space: nowrap;
 	}
 	.fab-search-dropdown>li:hover{
 		background-color:rgba(244, 66, 89,.5);
@@ -66,12 +65,14 @@
 					      <li class="active"><a ng-href="#DisplayResults">Home</a></li>
 						</ul>
 					</div>	
-					<div class="col-md-2" style="margin-top:.5%">
-			      		<input type="text" required class="form-control" ng-model="searchText" ng-change="GetText();" placeholder="Search">
-			      	</div>
-					<div class="col-md-1"  style="margin-top:.5%">
-						<button type="button" class="btn btn-success">Search</span></button>
-					</div>
+					<form>
+						<div class="col-md-2" style="margin-top:.5%">
+				      		<input type="text" required class="form-control" ng-model="searchText" ng-change="GetText();" placeholder="Search">
+				      	</div>
+						<div class="col-md-1"  style="margin-top:.5%">
+							<a type="submit" class="btn btn-success" href="#DisplayResultsT/{{searchText}}" ng-click="reset()">Search</span></a>
+						</div>
+					</form>
 				    <ul class="nav navbar-nav navbar-right">
 				    	<li><a href="#ShoppingCart">My Cart</a>
 				    	<li><a href="#/Logout">Logout</a></li>
@@ -79,13 +80,11 @@
 				  </div>
 				</nav>
 			</div>
-			<div class="row">
+			<div class="row" ng-if="freeTextResult != null && freeTextResult.length != 0">
 				<div class="col-md-2"></div>
 				<div class="col-md-2">
 					<ul class="fab-search-dropdown" style="display:block">
-				      <li><a href="#">HTML</a></li>
-				      <li><a href="#">CSS</a></li>
-				      <li><a href="#">JavaScript</a></li>
+				      <li ng-repeat="r in freeTextResult"><a href="#/DetailPage/{{r.movieId}}/movie" ng-click="reset(r.title)" >{{r.title}}</a></li>
 				    </ul>
 				</div>
 			</div>
