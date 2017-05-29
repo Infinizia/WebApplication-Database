@@ -9,10 +9,19 @@ import org.json.JSONObject;
 public class MyTask {
     private String url;
     private JSONObject jsonObject;
+    private String searchText = null;
 
     public MyTask()
     {
 
+    }
+    public void setSearchText(String text)
+    {
+        searchText = text;
+    }
+    public String getSearchText()
+    {
+        return searchText;
     }
     public void setUrl(String url)
     {
