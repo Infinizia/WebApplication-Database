@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public int currentPage = 0;
     List<String> movieList;
     MyTask getMovieList = new MyTask();
-    public String searchUrl = "http://54.187.220.164:8080/ICS122B/FullTextSearch";
-    public String getMovieListurl = "http://54.187.220.164:8080/ICS122B/AndroidGetMovieList";
+    public String searchUrl = "http://54.187.220.164:8080/fabflix_webapp/FullTextSearch";
+    public String getMovieListurl = "http://54.187.220.164:8080/fabflix_webapp/AndroidGetMovieList";
 
 
     @Override

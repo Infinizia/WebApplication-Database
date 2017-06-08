@@ -51,9 +51,12 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			Customer c = (Customer)JsonService.GetObjectFromJson(JsonService.GetJsonFromRequest(request.getReader()), Customer.class);
-			boolean isValid = VerifyUtils.verify(c.recaptcha);
+			//Uncomment this to enable recaptcha
+			//boolean isValid = VerifyUtils.verify(c.recaptcha);
+			
+			boolean isValid = true;
 			if(!isValid) {
-				throw new reCaptchaException();
+				//throw new reCaptchaException();
 			}
 			else {
 				UserService svc = new UserService();
