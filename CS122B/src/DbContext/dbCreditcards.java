@@ -1,4 +1,5 @@
 package DbContext;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 
@@ -17,11 +18,11 @@ public class dbCreditcards extends dbContext {
 	}
 	
 	public Creditcard GetCreditcard(String card_id){
-		String selectQuery = String.format("select * from %s where id = '%s'", this.tableName, card_id);
-		ResultSet r = super.ExecuteQuery(selectQuery);
-		Creditcard c = null;
-		
 		try{
+			String selectQuery = String.format("select * from %s where id = '%s'", this.tableName, card_id);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
+			ResultSet r = ps.executeQuery();
+			Creditcard c = null;
 		    while (r.next())
 		    {
 		    	c = new Creditcard();
@@ -30,27 +31,28 @@ public class dbCreditcards extends dbContext {
 		    	c.last_name = r.getString(dbCreditcards.last_name_col);
 		    	c.expiration = r.getDate(dbCreditcards.expiration_col).toString();
 		    }
+		    return c;
 		}
 		catch(Exception e){
 			System.out.println("Error occured, credit card does not exist");
 			return null;
 		}
-		return c;
+		
 		
 	}
 	
 	public Creditcard GetCreditcard(String id, String first_name, String last_name, String expiration)
 	{
-		first_name = first_name == null ? "" : first_name;
-		last_name = last_name == null ? "" : last_name;
-		id = id == null ? "" : id;
-		expiration = expiration == null ? "" : expiration;
-		String selectQuery = String.format("select * from %s where id = '%s' and first_name = '%s' and last_name = '%s' and expiration = '%s'",
-											this.tableName, id, first_name, last_name, expiration);
-		ResultSet r = super.ExecuteQuery(selectQuery);
-		Creditcard c = null;
-		
 		try{
+			first_name = first_name == null ? "" : first_name;
+			last_name = last_name == null ? "" : last_name;
+			id = id == null ? "" : id;
+			expiration = expiration == null ? "" : expiration;
+			String selectQuery = String.format("select * from %s where id = '%s' and first_name = '%s' and last_name = '%s' and expiration = '%s'",
+												this.tableName, id, first_name, last_name, expiration);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
+			ResultSet r = ps.executeQuery();
+			Creditcard c = null;
 			while (r.next())
 		    {
 		    	c = new Creditcard();
@@ -59,11 +61,12 @@ public class dbCreditcards extends dbContext {
 		    	c.last_name = r.getString(dbCreditcards.last_name_col);
 		    	c.expiration = r.getDate(dbCreditcards.expiration_col).toString();
 		    }
+			return c;
 		}
 		catch(Exception e){
 			System.out.println("Error occured, credit card does not exist");
 			return null;
 		}
-		return c;
+	
 	}
 }

@@ -20,12 +20,14 @@ public class dbGenre extends dbContext {
 	}
 	
 	public ArrayList<Genre> GetAllGenre(){
-		String selectAllQuery = String.format("select * from %s", this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		ArrayList<Genre> allGenre = new ArrayList<Genre>();
 
-		Genre g = null;
 		try{
+			String selectAllQuery = String.format("select * from %s", this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			ArrayList<Genre> allGenre = new ArrayList<Genre>();
+
+			Genre g = null;
 		    while (r.next())
 		    {
 	    		g = new Genre();
@@ -33,21 +35,22 @@ public class dbGenre extends dbContext {
 		    	g.setName(r.getString(dbGenre.name_col));
 		    	allGenre.add(g);
 		    }
+			return allGenre;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting customers");
 			return null;
 		}
-		return allGenre;
 	}
 
 	public ArrayList<Genre> GetAllGenreMappedMovie(){
-		String selectAllQuery = String.format("select * from %s join genres_in_movies on id = genre_id order by name", this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		ArrayList<Genre> allGenre = new ArrayList<Genre>();
-		HashMap<Integer, Genre> genreMapped = new HashMap<Integer, Genre>();
-		Genre g = null;
 		try{
+			String selectAllQuery = String.format("select * from %s join genres_in_movies on id = genre_id order by name", this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			ArrayList<Genre> allGenre = new ArrayList<Genre>();
+			HashMap<Integer, Genre> genreMapped = new HashMap<Integer, Genre>();
+			Genre g = null;
 		    while (r.next())
 		    {
 		    	int key = r.getInt(dbGenre.id_col);
@@ -66,30 +69,33 @@ public class dbGenre extends dbContext {
 		    	}
 		    	genreMapped.put(key, g);
 		    }
+			return allGenre;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting customers");
 			return null;
 		}
-		return allGenre;
+	
 	}
 	
 	public HashSet<String> GetAllGenreName(){
-		String selectAllQuery = String.format("select %s from %s", dbGenre.name_col, this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		HashSet<String> uniqueGenres = new HashSet<String>();
 		try{
+			String selectAllQuery = String.format("select %s from %s", dbGenre.name_col, this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			HashSet<String> uniqueGenres = new HashSet<String>();
 		    while (r.next())
 		    {
 		    	String key = r.getString(dbGenre.name_col);
 		    	uniqueGenres.add(key.toLowerCase());
 		    }
+			return uniqueGenres;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting stars");
 			return null;
 		}
-		return uniqueGenres;
+	
 	}
 	
 	public List<String> BatchInsert(HashSet<String> genreList){

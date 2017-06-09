@@ -1,5 +1,6 @@
 package DbContext;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import DbModel.Employee;
@@ -17,11 +18,12 @@ public class dbEmployee extends dbContext {
 	}
 	
 	public Employee GetEmployee(String email, String password){
-		String selectQuery = String.format("select * from %s where email = '%s' and password='%s'", this.tableName, email, password);
-		ResultSet r = super.ExecuteQuery(selectQuery);
-		Employee emp = null;
-		
 		try{
+			String selectQuery = String.format("select * from %s where email = '%s' and password='%s'", this.tableName, email, password);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
+			ResultSet r = ps.executeQuery();
+			Employee emp = null;
+			
 		    while (r.next())
 		    {
 		    	emp = new Employee();
@@ -29,13 +31,12 @@ public class dbEmployee extends dbContext {
 		    	emp.password = r.getString(password_col);
 		    	emp.fullname = r.getString(fullname_col);
 		    }
+		    return emp;
 		}
 		catch(Exception e){
 			System.out.println("Error occured, credit card does not exist");
 			return null;
 		}
-		return emp;
-		
 	}
 
 }

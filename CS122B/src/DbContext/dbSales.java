@@ -1,4 +1,5 @@
 package DbContext;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,11 @@ public class dbSales extends dbContext{
 	}
 	
 	public ArrayList<Sale> GetSalesByCustomerId(int id){
-		String selectAllQuery = String.format("select * from %s where %s = %d", this.tableName, dbSales.customer_id_col, id);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		ArrayList<Sale> allSales = new ArrayList<Sale>();
-		
 		try{
+			String selectAllQuery = String.format("select * from %s where %s = %d", this.tableName, dbSales.customer_id_col, id);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			ArrayList<Sale> allSales = new ArrayList<Sale>();
 		    while (r.next())
 		    {
 		    	Sale sale = new Sale();
@@ -33,12 +34,12 @@ public class dbSales extends dbContext{
 
 		    	allSales.add(sale);
 		    }
+		    return allSales;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting sales");
 			return null;
 		}
-		return allSales;
 	}
 	
 	public int AddSales(List<Sale> sales)

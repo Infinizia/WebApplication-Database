@@ -26,14 +26,16 @@ public class dbMovie extends dbContext {
 		this.tableName = dbMovie.table_name;
 	}
 	private List<Movie> ExecuteQueryStatement(String query){
-		ResultSet r = super.ExecuteQuery(query);
-		ArrayList<Movie> movieResult = new ArrayList<Movie>();
-		dbGenre genreDb = new dbGenre();
-		dbStars starDb = new dbStars();
-		
-		ArrayList<Genre> allGenre = genreDb.GetAllGenreMappedMovie();
-		ArrayList<Star> allStar = starDb.GetAllStarMappedWithMovie();
+
 		try{
+			PreparedStatement ps = sqlConnection.prepareStatement(query);
+			ResultSet r = ps.executeQuery();
+			ArrayList<Movie> movieResult = new ArrayList<Movie>();
+			dbGenre genreDb = new dbGenre();
+			dbStars starDb = new dbStars();
+			
+			ArrayList<Genre> allGenre = genreDb.GetAllGenreMappedMovie();
+			ArrayList<Star> allStar = starDb.GetAllStarMappedWithMovie();
 		    while (r.next())
 		    {	
 		    	Movie movie = new Movie();
@@ -49,12 +51,13 @@ public class dbMovie extends dbContext {
 		    	
 		    	movieResult.add(movie);
 		    }
+		    return movieResult;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting movies");
 			return null;
 		}
-		return movieResult;
+		
 		
 	}
 	
@@ -65,21 +68,22 @@ public class dbMovie extends dbContext {
 	}
 	
 	public HashSet<String> GetAllMovieName(){
-		String selectAllQuery = String.format("select %s from %s", dbMovie.title_col, this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		HashSet<String> uniqueMovies = new HashSet<String>();
 		try{
+			String selectAllQuery = String.format("select %s from %s", dbMovie.title_col, this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			HashSet<String> uniqueMovies = new HashSet<String>();
 		    while (r.next())
 		    {
 		    	String key = r.getString(dbMovie.title_col);
 		    	uniqueMovies.add(key.toLowerCase());
 		    }
+			return uniqueMovies;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting stars");
 			return null;
 		}
-		return uniqueMovies;
 	}
 	
 	public List<Movie> BatchInsert(List<Movie> movieList){

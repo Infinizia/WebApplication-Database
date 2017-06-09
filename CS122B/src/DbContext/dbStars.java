@@ -25,13 +25,13 @@ public class dbStars extends dbContext {
 	}
 	
 	public ArrayList<Star> GetAllStarMappedWithMovie(){
-		String selectAllQuery = String.format("select * from %s s join stars_in_movies sm on s.id = sm.star_id join movies m on m.id = sm.movie_id  order by s.id", this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		ArrayList<Star> allStar = new ArrayList<Star>();
-		HashMap<Integer, Star> starMapped = new HashMap<Integer, Star>();
-		Star s = null;
-		
 		try{
+			String selectAllQuery = String.format("select * from %s s join stars_in_movies sm on s.id = sm.star_id join movies m on m.id = sm.movie_id  order by s.id", this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			ArrayList<Star> allStar = new ArrayList<Star>();
+			HashMap<Integer, Star> starMapped = new HashMap<Integer, Star>();
+			Star s = null;
 		    while (r.next())
 		    {
 		    	int key = r.getInt(dbStars.id_col);
@@ -63,29 +63,30 @@ public class dbStars extends dbContext {
 	    		starMapped.put(key, s);
 
 		    }
+			return allStar;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting customers");
 			return null;
 		}
-		return allStar;
 	}
 	public HashSet<String> GetAllStarName(){
-		String selectAllQuery = String.format("select %s, %s from %s", dbStars.first_name_col, dbStars.last_name_col, this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		HashSet<String> uniqueStars = new HashSet<String>();
 		try{
+			String selectAllQuery = String.format("select %s, %s from %s", dbStars.first_name_col, dbStars.last_name_col, this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			HashSet<String> uniqueStars = new HashSet<String>();
 		    while (r.next())
 		    {
 		    	String key = r.getString(dbStars.first_name_col) + r.getString(dbStars.last_name_col);
 		    	uniqueStars.add(key.toLowerCase());
 		    }
+		    return uniqueStars;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting stars");
 			return null;
 		}
-		return uniqueStars;
 	}
 	
 	public int InsertStar(Star s){		

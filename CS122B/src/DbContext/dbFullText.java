@@ -1,5 +1,6 @@
 package DbContext;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -16,11 +17,13 @@ public class dbFullText extends dbContext {
 	}
 	
 	public ArrayList<MovieTitleSearch> GetMovie(String searchTextQuery){
-		String selectQuery = String.format("select * from ft where match(entry) against('%s' in boolean mode)", searchTextQuery);
-		ResultSet r = super.ExecuteQuery(selectQuery);
-		ArrayList<MovieTitleSearch> movieList = new ArrayList<MovieTitleSearch>();
-		
+
 		try{
+			String selectQuery = String.format("select * from ft where match(entry) against('%s' in boolean mode)", searchTextQuery);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
+			ResultSet r = ps.executeQuery();
+			ArrayList<MovieTitleSearch> movieList = new ArrayList<MovieTitleSearch>();
+			
 		    while (r.next())
 		    {
 		    	MovieTitleSearch movie = new MovieTitleSearch();
@@ -28,13 +31,12 @@ public class dbFullText extends dbContext {
 		    	movie.title = r.getString(entry_col);
 		    	movieList.add(movie);
 		    }
+			return movieList;
 		}
 		catch(Exception e){
 			System.out.println("Error occured, credit card does not exist");
 			return null;
 		}
-		return movieList;
-		
 	}
 
 }

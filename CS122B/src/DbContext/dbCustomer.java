@@ -1,5 +1,6 @@
 package DbContext;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import DbModel.Creditcard;
@@ -21,11 +22,11 @@ public class dbCustomer extends dbContext{
 	}
 	
 	public ArrayList<Customer> GetAllCustomer(){
-		String selectAllQuery = String.format("select * from %s", this.tableName);
-		ResultSet r = super.ExecuteQuery(selectAllQuery);
-		ArrayList<Customer> allCustomers = new ArrayList<Customer>();
-		
 		try{
+			String selectAllQuery = String.format("select * from %s", this.tableName);
+			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
+			ResultSet r = ps.executeQuery();
+			ArrayList<Customer> allCustomers = new ArrayList<Customer>();
 		    while (r.next())
 		    {
 		    	Customer cust = new Customer();
@@ -38,19 +39,20 @@ public class dbCustomer extends dbContext{
 		    	cust.setPassword(r.getString(dbCustomer.password_col));
 		    	allCustomers.add(cust);
 		    }
+			return allCustomers;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting customers");
 			return null;
 		}
-		return allCustomers;
 	}
 	
 	public Customer GetCustomerByEmailAndPassword(String email, String password){
-		String query = String.format("select * from %s where %s=\'%s\' and %s=\'%s\'", this.tableName, dbCustomer.email_col, email, dbCustomer.password_col, password);
-		ResultSet r = super.ExecuteQuery(query);
-		Customer cust = null;
 		try{
+			String query = String.format("select * from %s where %s=\'%s\' and %s=\'%s\'", this.tableName, dbCustomer.email_col, email, dbCustomer.password_col, password);
+			PreparedStatement ps = sqlConnection.prepareStatement(query);
+			ResultSet r = ps.executeQuery();
+			Customer cust = null;
 		    while (r.next())
 		    {
 		    	cust = new Customer();
@@ -62,6 +64,7 @@ public class dbCustomer extends dbContext{
 		    	cust.setEmail(r.getString(dbCustomer.email_col));
 		    	cust.setPassword(r.getString(dbCustomer.password_col));
 		    }
+		    return cust;
 		}
 		catch(Exception e){
 			System.out.println("Error occured getting customers");
@@ -69,7 +72,6 @@ public class dbCustomer extends dbContext{
 			e.printStackTrace();
 			return null;
 		}
-		return cust;
 	}
 	
 	public int InsertCustomer(Customer c){
