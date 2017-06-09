@@ -47,7 +47,7 @@ public class AddMovie extends HttpServlet {
 		String callAddMovie = "{Call add_movie(?,?,?,?,?,?,?,?)}";
 		try
 		{
-			callStatement = dbConnection.GetConnection().prepareCall(callAddMovie);
+			callStatement = dbConnection.GetConnection("master").prepareCall(callAddMovie);
 			callStatement.setString(1,movie.getTitle());
 			callStatement.setInt(2,movie.getYear());
 			callStatement.setString(3,movie.getDirector());

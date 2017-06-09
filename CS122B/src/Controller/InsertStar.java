@@ -39,7 +39,7 @@ public class InsertStar extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Star star = (Star)JsonService.GetObjectFromJson(request.getParameter("star"), Star.class);
-		dbStars dbs = new dbStars();
+		dbStars dbs = new dbStars("master");
 
 		int statusCheck = dbs.InsertStar(star);
 		if (statusCheck != -1)

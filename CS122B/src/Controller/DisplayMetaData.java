@@ -33,7 +33,7 @@ public class DisplayMetaData extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		dbContext metaData = new dbContext();
+		dbContext metaData = new dbContext("");
 		List<Metadata> dataList = metaData.PrintMetaData();
 		
 		if (dataList != null)

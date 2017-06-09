@@ -59,7 +59,7 @@ public class XmlActor extends HttpServlet {
 				Part filePart = request.getPart("xmlFile");
 				InputStream fileContent = filePart.getInputStream();
 				InputSource source = new InputSource(fileContent);
-				dbStars starDb = new dbStars();
+				dbStars starDb = new dbStars("master");
 				parser.parseXml(source);
 				starErrorList.addAll(starDb.BatchInsert(parser.addStarList));
 				ResponseService.SendJson(response, starErrorList);
@@ -70,9 +70,9 @@ public class XmlActor extends HttpServlet {
 				InputStream fileContent = filePart.getInputStream();
 				InputSource source = new InputSource(fileContent);		
 				parser.parseXml(source);			
-				dbMovie movieDb = new dbMovie();
+				dbMovie movieDb = new dbMovie("master");
 				movieErrotList.addAll(movieDb.BatchInsert(parser.addMovieList));
-				dbGenre genreDb = new dbGenre();
+				dbGenre genreDb = new dbGenre("master");
 				genreDb.BatchInsert(parser.addGenreList);
 				movieErrotList.addAll(movieDb.BatchInsertGenreMap(parser.addMovieList));
 				ResponseService.SendJson(response, movieErrotList);
@@ -83,7 +83,7 @@ public class XmlActor extends HttpServlet {
 				InputStream fileContent = filePart.getInputStream();
 				InputSource source = new InputSource(fileContent);		
 				parser.parseXml(source);			
-				dbStars starDb = new dbStars();
+				dbStars starDb = new dbStars("master");
 				starErrorList.addAll(starDb.BatchInsertMovieMap(parser.addStarList));
 				ResponseService.SendJson(response, starErrorList);
 			}

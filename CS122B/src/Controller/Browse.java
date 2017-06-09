@@ -24,7 +24,7 @@ public class Browse extends HttpServlet {
 
 		SearchService search = new SearchService();
 		ArrayList<Movie> movieList = new ArrayList<Movie>();
-		dbMovie selectedMovie = new dbMovie();  
+		dbMovie selectedMovie = new dbMovie("");  
 		String word = request.getParameter("text");
 		
 		//If the word length is more than 1, it means browse by genre otherwise is the first char of a title

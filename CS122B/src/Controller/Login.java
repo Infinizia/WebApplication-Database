@@ -61,7 +61,7 @@ public class Login extends HttpServlet {
 			else {
 				UserService svc = new UserService();
 				
-				dbEmployee employeeDb = new dbEmployee();
+				dbEmployee employeeDb = new dbEmployee("");
 				Employee emp = employeeDb.GetEmployee(c.email, c.password);
 				
 				if(emp != null){

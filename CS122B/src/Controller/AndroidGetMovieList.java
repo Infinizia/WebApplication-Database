@@ -44,7 +44,7 @@ public class AndroidGetMovieList extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		System.out.println("Get Movie Request");
-		dbMovie movieQuery = new dbMovie();
+		dbMovie movieQuery = new dbMovie("");
 		List<Movie> movieList = new ArrayList<Movie>();
 		
 		movieList = movieQuery.GetAllMovies();

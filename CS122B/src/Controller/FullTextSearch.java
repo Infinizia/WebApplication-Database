@@ -66,7 +66,7 @@ public class FullTextSearch extends HttpServlet {
 			searchQuery.append(String.format("%s*", searchText));
 		}
 		
-		dbFullText ftDb= new dbFullText();
+		dbFullText ftDb= new dbFullText("");
 		ArrayList<MovieTitleSearch> movieList = ftDb.GetMovie(searchQuery.toString());
 		System.out.println("Search result " + movieList.size());
 		ResponseService.SendJson(response, movieList);
