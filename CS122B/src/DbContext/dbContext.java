@@ -7,7 +7,7 @@ import DbModel.Metadata;
 
 
 public class dbContext{
-	protected static Connection sqlConnection = null;
+	protected Connection sqlConnection = null;
 	public String tableName = null;
 	
 	public dbContext(){
