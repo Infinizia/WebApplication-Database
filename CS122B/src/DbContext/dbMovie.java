@@ -51,6 +51,8 @@ public class dbMovie extends dbContext {
 		    	
 		    	movieResult.add(movie);
 		    }
+		    r.close();
+		    ps.close();
 		    return movieResult;
 		}
 		catch(Exception e){
@@ -78,6 +80,8 @@ public class dbMovie extends dbContext {
 		    	String key = r.getString(dbMovie.title_col);
 		    	uniqueMovies.add(key.toLowerCase());
 		    }
+		    r.close();
+		    ps.close();
 			return uniqueMovies;
 		}
 		catch(Exception e){
@@ -121,6 +125,7 @@ public class dbMovie extends dbContext {
 				catch(Exception e){	rejectedList.add(m);}
 			}
 			ps.executeBatch();
+			ps.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -163,6 +168,7 @@ public class dbMovie extends dbContext {
 				}
 			}
 			ps.executeBatch();
+			ps.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

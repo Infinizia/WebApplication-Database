@@ -61,17 +61,20 @@ public class Search extends HttpServlet
 			dbMovie movieDb = new dbMovie("");
 			allMovie = movieDb.GetAllMovies();
 			CacheService.AddCache(request, CacheService.FULL_MOVIE_LIST_CACHE_NAME, allMovie);
+			movieDb.Close();
 
 		}
 		if(allGenre == null){
 			dbGenre genreDb = new dbGenre("");
 			allGenre = genreDb.GetAllGenreMappedMovie();
 			CacheService.AddCache(request, CacheService.GENRE_CACHE_NAME, allGenre);
+			genreDb.Close();
 		}
 		if(allStars == null){
 			dbStars starDb = new dbStars("");
 			allStars = starDb.GetAllStarMappedWithMovie();
 			CacheService.AddCache(request, CacheService.STAR_CACHE_NAME, allStars);
+			starDb.Close();
 		}
 		
 		List<Movie> movieResult = searchRequest.getMovieList(allMovie, filter);

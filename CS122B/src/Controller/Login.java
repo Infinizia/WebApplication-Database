@@ -81,6 +81,8 @@ public class Login extends HttpServlet {
 						throw new Exception();
 					}
 				}
+				svc.db.Close();
+				employeeDb.Close();	
 			}
 		}
 		catch(reCaptchaException e) {

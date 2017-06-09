@@ -24,10 +24,22 @@ public class dbContext{
 			System.out.println("We do not have connection to databse");
 		}
 	}
+	public void Close(){
+		try{
+			this.sqlConnection.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			System.out.println("We do not have connection to databse");
+		}
+	
+	}
 	protected ResultSet ExecuteQuery(String query){
 		try{
 			 Statement select = sqlConnection.createStatement();
-			 return select.executeQuery(query);
+			 ResultSet rs = select.executeQuery(query);
+			 select.close();
+			 return rs;
 		}
 		catch(Exception e){
 			System.out.println("Could not execute query");
@@ -38,7 +50,9 @@ public class dbContext{
 	protected int ExecuteUpdate(String updateQuery){
 		try{
 			 Statement select = sqlConnection.createStatement();
-			 return select.executeUpdate(updateQuery);
+			 int i = select.executeUpdate(updateQuery);
+			 select.close();
+			 return i;
 		}
 		catch(Exception e){
 			System.out.println("Could not execute update");
@@ -71,7 +85,10 @@ public class dbContext{
 
 				}
 				dataList.add(db);
+				
+				r.close();
 			}
+			rs.close();
 		}
 		catch(Exception e){
 			System.out.println("Failed to print meta data");

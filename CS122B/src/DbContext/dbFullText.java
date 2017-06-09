@@ -31,6 +31,8 @@ public class dbFullText extends dbContext {
 		    	movie.title = r.getString(entry_col);
 		    	movieList.add(movie);
 		    }
+		    r.close();
+		    ps.close();
 			return movieList;
 		}
 		catch(Exception e){

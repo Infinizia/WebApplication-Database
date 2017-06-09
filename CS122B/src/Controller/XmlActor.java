@@ -62,6 +62,7 @@ public class XmlActor extends HttpServlet {
 				dbStars starDb = new dbStars("master");
 				parser.parseXml(source);
 				starErrorList.addAll(starDb.BatchInsert(parser.addStarList));
+				starDb.Close();
 				ResponseService.SendJson(response, starErrorList);
 			}
 			else if (type.equals("main")){
@@ -75,6 +76,7 @@ public class XmlActor extends HttpServlet {
 				dbGenre genreDb = new dbGenre("master");
 				genreDb.BatchInsert(parser.addGenreList);
 				movieErrotList.addAll(movieDb.BatchInsertGenreMap(parser.addMovieList));
+				movieDb.Close();
 				ResponseService.SendJson(response, movieErrotList);
 			}
 			else if(type.equals("cast")){
@@ -85,6 +87,7 @@ public class XmlActor extends HttpServlet {
 				parser.parseXml(source);			
 				dbStars starDb = new dbStars("master");
 				starErrorList.addAll(starDb.BatchInsertMovieMap(parser.addStarList));
+				starDb.Close();
 				ResponseService.SendJson(response, starErrorList);
 			}
 		}
