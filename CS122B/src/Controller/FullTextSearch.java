@@ -69,7 +69,6 @@ public class FullTextSearch extends HttpServlet {
 		dbFullText ftDb= new dbFullText("");
 		ArrayList<MovieTitleSearch> movieList = ftDb.GetMovie(searchQuery.toString());
 		System.out.println("Search result " + movieList.size());
-		ftDb.Close();
 		ResponseService.SendJson(response, movieList);
 	}
 

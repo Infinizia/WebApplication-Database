@@ -35,7 +35,6 @@ public class DisplayMetaData extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		dbContext metaData = new dbContext("");
 		List<Metadata> dataList = metaData.PrintMetaData();
-		metaData.Close();
 		
 		if (dataList != null)
 			ResponseService.SendJson(response, dataList);

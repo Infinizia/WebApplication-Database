@@ -18,6 +18,7 @@ public final class dbConnection {
 //	private static String myLogin = "root";
 //	private static String myPass = "nguyen";
 //	private static String myUrl = "jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&useSSL=false";
+
 	
 	public static Connection GetConnection(String setting){
 		try{

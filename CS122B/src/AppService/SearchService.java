@@ -48,14 +48,14 @@ public class SearchService {
 					String[] fullName = {filter.searchWord.toLowerCase().substring(0, index), filter.searchWord.toLowerCase().substring(index)};
 
 					allMovie = allMovie.stream().filter(x -> x.getStars().stream()
-									.anyMatch(y -> y.first_name.toLowerCase().equals(fullName[0])
+									.anyMatch(y -> y.getFirst_name().toLowerCase().equals(fullName[0])
 										|| y.getLast_name().toLowerCase().equals(fullName[1])
-												|| (y.first_name.toLowerCase().equals(fullName[0])
+												|| (y.getFirst_name().toLowerCase().equals(fullName[0])
 														&& y.getLast_name().toLowerCase().equals(fullName[1])))).collect(Collectors.toList());;
 				}
 				else{
 					allMovie = allMovie.stream().filter(x -> x.getStars().stream()
-									.anyMatch(y -> y.first_name.toLowerCase().equals(filter.searchWord) 
+									.anyMatch(y -> y.getFirst_name().toLowerCase().equals(filter.searchWord) 
 										|| y.getLast_name().toLowerCase().equals(filter.searchWord))).collect(Collectors.toList());
 				}
 				

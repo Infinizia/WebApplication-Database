@@ -31,8 +31,6 @@ public class dbCreditcards extends dbContext {
 		    	c.last_name = r.getString(dbCreditcards.last_name_col);
 		    	c.expiration = r.getDate(dbCreditcards.expiration_col).toString();
 		    }
-		    r.close();
-		    ps.close();
 		    return c;
 		}
 		catch(Exception e){
@@ -63,8 +61,6 @@ public class dbCreditcards extends dbContext {
 		    	c.last_name = r.getString(dbCreditcards.last_name_col);
 		    	c.expiration = r.getDate(dbCreditcards.expiration_col).toString();
 		    }
-			r.close();
-			ps.close();
 			return c;
 		}
 		catch(Exception e){

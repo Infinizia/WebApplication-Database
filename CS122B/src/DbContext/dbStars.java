@@ -72,9 +72,6 @@ public class dbStars extends dbContext {
 	    		starMapped.put(key, s);
 
 		    }
-		    r.close();
-			ps.close();
-			
 			return allStar;
 		}
 		catch(Exception e){
@@ -93,8 +90,6 @@ public class dbStars extends dbContext {
 		    	String key = r.getString(dbStars.first_name_col) + r.getString(dbStars.last_name_col);
 		    	uniqueStars.add(key.toLowerCase());
 		    }
-		    r.close();
-		    ps.close();
 		    return uniqueStars;
 		}
 		catch(Exception e){
@@ -107,23 +102,19 @@ public class dbStars extends dbContext {
 		try{
 			//Determine if the star already exists in the database
 			String selectQuery = String.format("select * from %s where stars.first_name = \"%s\" and stars.last_name = \"%s\" ",
-					this.tableName, s.first_name,s.getLast_name());
-			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
-			ResultSet rs = ps.executeQuery();
-			ps.close();
-			if (rs.next()){
-				rs.close();
+					this.tableName,s.getFirst_name(),s.getLast_name());
+			
+			ResultSet rs = super.ExecuteQuery(selectQuery);
+			if (rs.next())
 				return -1;
-			}
 			else
 			{	
-				ps = sqlConnection.prepareStatement(String.format("insert into %s (%s, %s) values(?, ?)", 
-						this.tableName, dbStars.first_name_col, dbStars.last_name_col));			
+				//If not, then insert new star to the database
+				String insertQuery = String.format("insert into %s (%s, %s) values('%s', '%s')", 
+						this.tableName, dbStars.first_name_col, dbStars.last_name_col,
+						s.getFirst_name(), s.getLast_name());
 				
-				int update = ps.executeUpdate();
-				rs.close();
-				ps.close();		
-				return update;
+				return super.ExecuteUpdate(insertQuery);
 			}
 		}
 		catch(Exception e){
@@ -143,15 +134,15 @@ public class dbStars extends dbContext {
 																	+ "VALUES(?, ?, ?)");
 			for(Star s : starList){
 				try{
-					String key = s.first_name + s.getLast_name();
+					String key = s.getFirst_name() + s.getLast_name();
 					
-					if(allUniqueStar.contains(key.toLowerCase().trim()) || s.first_name == "" || s.getLast_name() == "" || key == ""){
+					if(allUniqueStar.contains(key.toLowerCase().trim()) || s.getFirst_name() == "" || s.getLast_name() == "" || key == ""){
 						rejectedList.add(s);
 						continue;
 					}
 					else{
 						ps.clearParameters();
-						ps.setString(1, s.first_name);
+						ps.setString(1, s.getFirst_name());
 						ps.setString(2, s.getLast_name());
 						ps.setDate(3, s.getDob());
 						ps.addBatch();
@@ -169,7 +160,6 @@ public class dbStars extends dbContext {
 				}
 			}
 			ps.executeBatch();
-			ps.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -186,21 +176,21 @@ public class dbStars extends dbContext {
 			PreparedStatement ps = sqlConnection.prepareStatement("{Call add_star_movie_map(?,?, ?)}");
 			for(Star s : starList){
 				try{
-					if(s.first_name == null){
+					if(s.getFirst_name() == null){
 						continue;
 					}
-					String[] name = s.first_name.split(" ");
+					String[] name = s.getFirst_name().split(" ");
 					if(name.length > 1){
 						s.setFirst_name(name[0]);
 						s.setLast_name(name[1]);
 					}
 					else{
-						s.setLast_name(s.first_name);
+						s.setLast_name(s.getFirst_name());
 						s.setFirst_name("");
 					}
 					ps.clearParameters();
 					ps.setString(1, s.movie);
-					ps.setString(2, s.first_name);
+					ps.setString(2, s.getFirst_name());
 					ps.setString(3, s.getLast_name());
 					ps.addBatch();
 					batchCount++;
@@ -216,7 +206,6 @@ public class dbStars extends dbContext {
 				}
 			}
 			ps.executeBatch();
-			ps.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

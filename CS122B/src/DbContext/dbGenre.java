@@ -35,8 +35,6 @@ public class dbGenre extends dbContext {
 		    	g.setName(r.getString(dbGenre.name_col));
 		    	allGenre.add(g);
 		    }
-		    r.close();
-		    ps.close();
 			return allGenre;
 		}
 		catch(Exception e){
@@ -71,8 +69,6 @@ public class dbGenre extends dbContext {
 		    	}
 		    	genreMapped.put(key, g);
 		    }
-		    r.close();
-		    ps.close();
 			return allGenre;
 		}
 		catch(Exception e){
@@ -93,8 +89,6 @@ public class dbGenre extends dbContext {
 		    	String key = r.getString(dbGenre.name_col);
 		    	uniqueGenres.add(key.toLowerCase());
 		    }
-		    r.close();
-		    ps.close();
 			return uniqueGenres;
 		}
 		catch(Exception e){
@@ -136,7 +130,6 @@ public class dbGenre extends dbContext {
 				catch(Exception e){rejectedList.add(g);}
 			}
 			ps.executeBatch();
-		    ps.close();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

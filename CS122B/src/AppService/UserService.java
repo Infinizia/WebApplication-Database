@@ -4,7 +4,7 @@ import DbContext.dbCustomer;
 import DbModel.Customer;
 
 public class UserService {
-	public dbCustomer db = null;
+	private dbCustomer db = null;
 	
 	public UserService(){
 		db = new dbCustomer("");

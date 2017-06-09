@@ -47,19 +47,16 @@ public class AddMovie extends HttpServlet {
 		String callAddMovie = "{Call add_movie(?,?,?,?,?,?,?,?)}";
 		try
 		{
-			Connection c = dbConnection.GetConnection("master");
-			callStatement = c.prepareCall(callAddMovie);
+			callStatement = dbConnection.GetConnection("master").prepareCall(callAddMovie);
 			callStatement.setString(1,movie.getTitle());
 			callStatement.setInt(2,movie.getYear());
 			callStatement.setString(3,movie.getDirector());
 			callStatement.setString(4,movie.getBanner_url());
 			callStatement.setString(5,movie.getTrailer_url());
-			callStatement.setString(6,star.first_name);
+			callStatement.setString(6,star.getFirst_name());
 			callStatement.setString(7,star.getLast_name());
 			callStatement.setString(8,genre.getName());
 			int count = callStatement.executeUpdate();
-			c.close();
-			callStatement.close();
 			if (count > 0)
 				ResponseService.SendJson(response, "success");
 		
