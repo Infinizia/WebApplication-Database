@@ -13,8 +13,8 @@ public class dbSales extends dbContext{
 	public static final String sale_date_col = "sale_date";
 	public static final String table_name = "sales";
 	
-	public dbSales(){
-		super();
+	public dbSales(String setting){
+		super(setting);
 		this.tableName = dbSales.table_name;
 	}
 	

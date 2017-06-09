@@ -12,8 +12,8 @@ public class dbEmployee extends dbContext {
 	public static final String password_col = "password";
 	public static final String fullname_col = "fullname";
 
-	public dbEmployee(){
-		super();
+	public dbEmployee(String setting){
+		super(setting);
 		this.tableName = "employees";
 	}
 	

@@ -11,8 +11,8 @@ public class dbFullText extends dbContext {
 	public static final String entry_col = "entry";
 	public static final String movieId_col = "movieID";
 
-	public dbFullText(){
-		super();
+	public dbFullText(String setting){
+		super(setting);
 		this.tableName = "employees";
 	}
 	

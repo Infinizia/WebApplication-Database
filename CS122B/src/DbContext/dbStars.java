@@ -28,8 +28,8 @@ public class dbStars extends dbContext {
 	public static final String table_name = "stars";
 	public static final String movie_id_col = "movie_id";
 	
-	public dbStars(){
-		super();
+	public dbStars(String setting){
+		super(setting);
 		this.tableName = dbStars.table_name;
 	}
 	

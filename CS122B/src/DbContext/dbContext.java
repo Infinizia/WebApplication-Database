@@ -9,10 +9,12 @@ import DbModel.Metadata;
 public class dbContext{
 	protected Connection sqlConnection = null;
 	public String tableName = null;
+	public String setting;
 	
-	public dbContext(){
+	public dbContext(String setting){
 		try{
-			sqlConnection = dbConnection.GetConnection();
+			this.setting = setting;
+			sqlConnection = dbConnection.GetConnection(setting);
 			if(sqlConnection == null){
 				System.out.println("We do not have connection to databse");
 			}

@@ -12,8 +12,8 @@ public class dbCreditcards extends dbContext {
 	public static final String expiration_col = "expiration";
 	public static final String table_name = "creditcards";
 	
-	public dbCreditcards(){
-		super();
+	public dbCreditcards(String setting){
+		super(setting);
 		this.tableName = dbCreditcards.table_name;
 	}
 	

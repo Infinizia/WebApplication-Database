@@ -14,8 +14,8 @@ public class dbGenre extends dbContext {
 	public static final String id_col = "id";
 	public static final String name_col = "name";
 	public static final String movie_id_col = "movie_id";
-	public dbGenre(){
-		super();
+	public dbGenre(String setting){
+		super(setting);
 		this.tableName = "genres";
 	}
 	

@@ -21,8 +21,8 @@ public class dbMovie extends dbContext {
 	public static final String table_name = "movies";
 	public static final String star_mapping_table_name = "stars_in_movies";
 	
-	public dbMovie(){
-		super();
+	public dbMovie(String setting){
+		super(setting);
 		this.tableName = dbMovie.table_name;
 	}
 	private List<Movie> ExecuteQueryStatement(String query){
@@ -31,8 +31,8 @@ public class dbMovie extends dbContext {
 			PreparedStatement ps = sqlConnection.prepareStatement(query);
 			ResultSet r = ps.executeQuery();
 			ArrayList<Movie> movieResult = new ArrayList<Movie>();
-			dbGenre genreDb = new dbGenre();
-			dbStars starDb = new dbStars();
+			dbGenre genreDb = new dbGenre(this.setting);
+			dbStars starDb = new dbStars(this.setting);
 			
 			ArrayList<Genre> allGenre = genreDb.GetAllGenreMappedMovie();
 			ArrayList<Star> allStar = starDb.GetAllStarMappedWithMovie();

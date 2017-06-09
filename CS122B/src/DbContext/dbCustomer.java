@@ -16,8 +16,8 @@ public class dbCustomer extends dbContext{
 	public static final String password_col = "password";
 	public static final String table_name = "customers";
 	
-	public dbCustomer(){
-		super();
+	public dbCustomer(String setting){
+		super(setting);
 		this.tableName = dbCustomer.table_name;
 	}
 	
@@ -75,7 +75,7 @@ public class dbCustomer extends dbContext{
 	}
 	
 	public int InsertCustomer(Customer c){
-		dbCreditcards dbcc = new dbCreditcards();
+		dbCreditcards dbcc = new dbCreditcards(this.setting);
 		Creditcard cc = dbcc.GetCreditcard(c.cc_id);
 		
 		if(cc != null){
@@ -99,7 +99,7 @@ public class dbCustomer extends dbContext{
 	
 	public int DeleteCustomerById(int customer_id){
 		try{
-			dbSales salesDb = new dbSales();
+			dbSales salesDb = new dbSales(this.setting);
 			if(customer_id != -1){
 				if(salesDb.DeleteSaleByCustomerId(customer_id) != -1){
 					String deleteQuery = String.format("delete from %s where id=%d", this.tableName, customer_id);
