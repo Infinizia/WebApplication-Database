@@ -1,0 +1,84 @@
+(function() {
+	'use strict';
+	angular.module('fabflixApp')
+		.config(function($routeProvider, $locationProvider) {
+			$locationProvider.hashPrefix('');
+		    $routeProvider
+		    .when('/', {
+		    	templateUrl: "html/Login.html",
+		    	controller: "loginCtrl",
+		    	controllerAs: 'vm'
+		    })
+		    .when('/DisplayResults', {
+		    	templateUrl: "html/DisplayResults.html",
+		    	controller: "browseCtrl",
+		    	controllerAs: 'vm',
+		    	resolve:{
+		    		data: function($route){
+		    			return {
+		    				filters:$route.current.params.filters,
+		    			}
+		    		},
+		    		"check": function($rootScope, $http, $location){
+		    			if(!$rootScope.globals.user){
+		    				$location.url('/').replace();
+		    			}
+		    		}
+		    	}
+		    })
+		    .when('/ShoppingCart', {
+<<<<<<< HEAD
+		    	templateUrl: "html/ShoppingCart.html",
+		    	controller: "shoppingCartCtrl",
+		    	controllerAs: 'vm'
+		    })
+		    .when('/Checkout', {
+		    	templateUrl: "html/Checkout.html",
+=======
+		    	templateUrl: "html/DisplayResults.html/:filters?",
+		    	controller: "shoppingCartCtrl",
+		    	controllerAs: 'vm',
+		    	resolve:{
+		    		"check": function($rootScope, $http, $location){
+		    			if(!$rootScope.globals.user){
+		    				$location.url('/').replace();
+		    			}
+		    		}
+		    	}
+		    })
+		    .when('/Logout', {
+		    	templateUrl: "html/DisplayResults.html",
+>>>>>>> master
+		    	controller: "shoppingCartCtrl",
+		    	controllerAs: 'vm',
+		    	resolve:{
+		    		"check": function($rootScope, $http, $location){
+		    			$rootScope.globals = {};
+		    			$http({
+		    				method:"GET",
+		    				url: 'Logout'
+		    			});
+		    			$location.url('/').replace();
+		    		}
+		    	}
+		    })
+		    .when('/DetailPage/:id/:type', {
+		    	templateUrl: "html/.html",
+		    	controller: "displayCtrl",
+		    	controllerAs: 'vm',
+		    	resolve:{
+		    		data: function($route){
+		    			return {
+		    				id:$route.current.params.id,
+		    				type:$route.current.params.type
+		    			}
+		    		},
+				    "check": function($rootScope, $location){
+		    			if(!$rootScope.globals.user){
+		    				$location.url('/').replace();
+		    			}
+		    		}
+		    	}
+		    })
+	});
+})();

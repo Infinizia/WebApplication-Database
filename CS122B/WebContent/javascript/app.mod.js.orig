@@ -1,0 +1,29 @@
+(function() {
+	'use strict';
+	angular.module('fabflixApp', ['ngRoute', 'ngResource', 'ui-notification'])
+<<<<<<< HEAD
+		.config(function(NotificationProvider) {
+			NotificationProvider.setOptions({
+				startTop: 80
+			})
+		});
+=======
+		.run(['$rootScope','$location', '$routeParams', 'userSvc', '$q', function($rootScope, $location, $routeParams, userSvc, $q) {
+		    $rootScope.$on('$routeChangeSuccess', function(e, current, pre) {
+		    	userSvc.currentUser().then(function(data){
+		    		console.log(data);
+		    		if(data.length === 0){
+
+		    			$location.path('/').replace();
+		    		}
+		    		else{
+		    			console.log("test path" + $location.path())
+		    			$location.path()
+		    		}
+		    	}).catch(function(err){
+		    		$location.path('/').replace();
+		    	})
+		    });
+	  }]);
+>>>>>>> ef6eaf532b14a738775e022054b0aee282fdbce5
+})();

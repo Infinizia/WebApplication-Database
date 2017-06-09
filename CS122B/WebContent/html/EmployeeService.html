@@ -1,0 +1,161 @@
+<div ng-app="fablixApp" ng-controller="adminCtrl">
+	<div class="container">
+	  <h2>Employee Menu</h2>
+	  <ul class="nav nav-tabs">
+	    <li><a target="_self" data-toggle="tab" href="#menu1">Metadata</a></li>
+	    <li><a target="_self" data-toggle="tab" href="#menu2">Insert Star</a></li>
+	    <li><a target="_self" data-toggle="tab" href="#menu3">Add Movie</a></li>
+	    <li><a target="_self" data-toggle="tab" href="#menu4">Upload XML</a></li>
+	  </ul>
+	  
+	  <div class="tab-content">
+	  	<!-- Add a star to the database  -->
+		<div id="menu1" class="tab-pane fade">
+		  	<div class="row">
+		   		<h3>Table Information</h3>
+		   		<div>
+		    		<button type="button" ng-click="vm.PrintMetaData()" class="btn btn-success">Show</button>
+		   		</div>      
+				<div ng-if= "vm.dataList.length != 0" id="MetadataTable">
+			      	<div ng-repeat="table in vm.dataList"> 
+			 			<table class="table table-bordered table-striped">
+			   				<thread>
+							    <tr>
+								     <th>Table name: {{table.tableName}}</th>
+								     <th>Type</th>
+							    </tr>
+				   			</thread>
+				   		<tbody>
+						    <tr ng-repeat="(name,type) in table.columnAttribute"> 
+							     <td>Column Name: {{name}}</td>
+							     <td>{{type}}</td>
+						    </tr>
+				   		</tbody>
+				  </table>
+				 </div>
+				</div>
+			</div>
+		 </div>
+	    <!-- Add a star to the database  -->
+	    <div id="menu2" class="tab-pane fade">
+	      <form class="navbar-form navbar-left" ng-submit="vm.InsertStar()">
+	      	<h3>Insert a star</h3> 
+		        <div class="form-group">
+		          	<input required type="text" name="starName" ng-model="vm.star_fullname" class="form-control" placeholder="Enter name">
+		          	<button type="submit" class="btn btn-success">Insert</button>
+		        </div>
+	      </form>
+	    </div>
+	    
+	    <!-- Add a movie to the database  -->
+	    <div id="menu3" class="tab-pane fade">
+	      	<div class="col-md-8">
+        		<h3>Add movie</h3>
+				<form name="AddMovieForm" ng-submit="vm.AddMovie(AddMovieForm)" novalidate>
+					<div class="form-group">
+						<label for="title">Title *</label>
+						<span class="error" ng-show="AddMovieForm.$submitted && AddMovieForm.title.$error.required">Enter a title</span>
+						<input type="text" class="form-control" name="title" required ng-model="vm.movie_info.title" placeholder="Enter the movie title" 
+						ng-class="{'border-red' : AddMovieForm.$submitted && AddMovieForm.title.$error.required}"/>							
+					</div>
+					<div class="form-group">
+						<label for="year">Year *</label>
+							<span class="error" ng-show="(AddMovieForm.$submitted && AddMovieForm.year.$error.required) || (AddMovieForm.$submitted && AddMovieForm.year.$invalid)">Enter a year (YYYY)</span>
+							<input type="text" class="form-control" name="year" required ng-pattern="/^[0-9]*$/" ng-model="vm.movie_info.year" placeholder="Enter the movie year" 
+							ng-class="{'border-red' : (AddMovieForm.$submitted && AddMovieForm.year.$error.required) || (AddMovieForm.$submitted && AddMovieForm.year.$invalid)}"/>
+							
+					</div>
+					<div class="form-group">
+						<label for="director">Director *</label>
+						<span class="error" ng-show="AddMovieForm.$submitted && AddMovieForm.director.$error.required">Enter a director name</span>
+						<input type="text" class="form-control" name="director" required  ng-model="vm.movie_info.director" placeholder="Enter the movie director name" 
+						ng-class="{'border-red' : AddMovieForm.$submitted && AddMovieForm.director.$error.required}"/>
+					</div>
+					<div class="form-group">
+						<label for="first_name">Star First name *</label>
+						<span class="error" ng-show="AddMovieForm.$submitted && AddMovieForm.first_name.$error.required">Enter star first name</span>
+						<input type="text" class="form-control" name="first_name" required ng-model="vm.star_info.first_name" placeholder="Enter the star first name"
+						ng-class="{'border-red' : AddMovieForm.$submitted && AddMovieForm.first_name.$error.required}"/>
+					</div>
+					<div class="form-group">
+						<label for="last_name">Star Last name *</label>
+						<span class="error" ng-show="AddMovieForm.$submitted && AddMovieForm.last_name.$error.required">Enter star last name</span>
+						<input type="text" class="form-control" name="last_name" required ng-model="vm.star_info.last_name" placeholder="Enter the star last name" 
+						ng-class="{'border-red' : AddMovieForm.$submitted && AddMovieForm.last_name.$error.required}"/>
+					</div>
+					<div class="form-group">
+						<label for="genre">Genre *</label>
+						<span class="error" ng-show="AddMovieForm.$submitted && AddMovieForm.genre.$error.required">Enter a genre</span>
+						<input type="text" class="form-control" name="genre" required ng-model="vm.genre_info.name" placeholder="Enter the movie genre" 
+						ng-class="{'border-red' : AddMovieForm.$submitted && AddMovieForm.genre.$error.required}"/>
+					</div>
+					<div class="form-group">
+						<label for="banner_url">Banner URL</label>
+						<input type="text" class="form-control" name="banner_url" ng-model="vm.movie_info.banner_url" placeholder="Enter the banner url" />
+					</div>
+                    <div class="form-group">
+						<label for="trailer_url">Trailer URL</label>
+						<input type="text" class="form-control" name="trailer_url" ng-model="vm.movie_info.trailer_url" placeholder="Enter the trailer url" />
+					</div>
+					<div class="form-group">
+						<button type="button" ng-click="vm.Clear()" class="btn btn-default"  style="float: right">Clear</button>
+						<button type="submit" class="btn btn-success" style="float: right; margin-right: 10px">Add</button>
+					</div>
+				</form>
+			</div>
+	    </div>
+	    <div id="menu4" class="tab-pane fade">
+	    	<form enctype="multipart/form-data" style="margin-top:2%;">
+	    		<div class="form-group">
+	    			 <input type="radio" name="type" value="actor" ng-model="vm.xmlUpload.type"> Actor
+					 <input type="radio" name="type" value="main" ng-model="vm.xmlUpload.type"> Main
+					 <input type="radio" name="type" value="cast" ng-model="vm.xmlUpload.type"> Casts
+	    		</div>
+	    		<div class="form-group">
+	    			<input type="file" accept="text/xml" demo-file-model="vm.xmlUpload.xmlFile"/>
+	    		</div>
+			  	<button class="btn btn-success" type="submit" ng-click="vm.UploadFile()">Upload</button>
+			  	
+			  	<div class="form-group" style="margin-top:3%">
+				  	<label>Error List</label>
+				  	<table class="table table-bordered table-striped" ng-if="vm.xmlUpload.type === 'actor' || vm.xmlUpload.type === 'cast'">
+						<tr>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>DOB</th>
+							<th>Movie</th>
+	
+						</tr>
+						<tr ng-repeat="error in vm.starErrorList">
+							<td>{{error.first_name}}</td>
+							<td>{{error.last_name}}</td>
+							<td>{{error.dob}}</td>
+							<td>{{error.movie}}</td>
+						</tr>
+					</table>
+					<table class="table table-bordered table-striped" ng-if="vm.xmlUpload.type === 'main'">
+						<tr>
+							<th>Title</th>
+							<th>Year</th>
+							<th>Director</th>
+							<th>Genres</th>
+	
+						</tr>
+						<tr ng-repeat="error in vm.movieErrorList">
+							<td>{{error.title}}</td>
+							<td>{{error.year}}</td>
+							<td>{{error.director}}</td>
+							<td><span ng-repeat="g in error.genres">{{g.name}}<span ng-if="!$last">, </span></span></td>
+						</tr>
+					</table>
+			  	</div>
+			</form>
+		</div>
+	  </div>
+	</div>
+</div>
+<style>
+.wait{
+	cursor:wait;
+}
+</style>

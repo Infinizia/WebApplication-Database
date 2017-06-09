@@ -1,0 +1,40 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<title>Login</title>
+<div class="container">
+	<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-md-12">
+						<h3 style="margin-left:17%">Login</h3>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="email">Email:</label>
+				    <div class="col-md-6">
+				      <input required ng-model="vm.form_info.email"name="email" type="email" class="form-control" id="email" placeholder="Enter email">
+				    </div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="password">Password:</label>
+					<div class="col-md-6"> 
+					  <input required name="password" type="password" class="form-control"  ng-model="vm.form_info.password" placeholder="Enter password">
+					</div>
+				</div>
+				<div class="form-group" ng-if="vm.failed == true">
+					<div class="col-sm-offset-2 col-md-12">
+			      		<label class="label label-danger">Failed</label>
+			    	</div>
+				</div>
+				<div class="form-group"> 
+			    	<div class="col-sm-offset-2 col-md-12">
+			    		<div class="g-recaptcha" data-sitekey="6LeFRiEUAAAAADDiGIMufEeMTyn1jJjZ7VcTX35G"></div>
+			      		<button type="button" ng-click="vm.login()" class="btn btn-success">Submit</button>
+			    	</div>
+			  </div>
+			</form>			
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+</div>

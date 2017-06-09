@@ -1,0 +1,75 @@
+<div class="container">
+	<div class="row">
+		<a href="#/DisplayResults">&lt;&lt; Back</a>
+	</div>
+	<div class="row" ng-if="vm.type === 'movie'">
+		<h2>Movie information</h2>
+		<img ng-src="{{vm.movieDetail.banner_url}}" width="200" height="300"/>
+		<table id ="mytable" class="table table-hover table-bordered">
+	      	<tr>
+	          	<th>ID</th>
+	          	<td>{{vm.movieDetail.id}}</td>
+	        </tr>
+	        <tr>
+	          	<th>Title</th>
+	          	<td>{{vm.movieDetail.title}}</td>
+	        </tr>
+	        <tr>
+	          	<th>Year</th>
+	          	<td>{{vm.movieDetail.year}}</td>
+	        </tr>
+	        <tr>
+	          	<th>Director</th>
+	          	<td>{{vm.movieDetail.director}}</td>
+	        </tr>
+	        <tr>
+	          	<th>Genres</th>
+	          	<td>
+	         		<a ng-repeat="g in vm.movieDetail.genres" ng-href="#/DisplayResults/{{g.name}}">{{g.name}}<span ng-if="!$last">, </span></a>
+	          	</td>
+	      	</tr>
+	      	<tr>
+	          	<th>Featured star</th>
+	          	<td>
+	          		<a ng-repeat="s in vm.movieDetail.stars" ng-href="#/DetailPage/{{s.id}}/star">{{s.first_name + ' ' + s.last_name}}<span ng-if="!$last">, </span></a>
+	          	</td>
+	      	</tr>
+	      	<tr>
+	          	<th>Trailer</th>
+	          	<td><a ng-href="{{vm.movieDetail.trailer_url}}" target="_blank">{{vm.movieDetail.trailer_url}}</a></td>
+	      	</tr>
+	      	<tr>
+	      		<th>Add to Cart</th>
+	      		<td><button type="submit" class="btn btn-success" ng-click="addToCart(vm.movieDetail)">Add to Cart</button></td>
+	      	</tr>
+		</table>
+	</div>
+	<div class="row" ng-if="vm.type === 'star'">
+		<h2>Star information</h2>
+		<img ng-src="{{vm.starDetail.photo_url}}"  width="200" height="300"/>
+		<table id ="mytable" class="table table-hover table-bordered" >
+	      	<tr>
+	          	<th>ID</th>
+	          	<td>{{vm.starDetail.id}}</td>
+	        </tr>
+	        <tr>
+	          	<th>First Name</th>
+	          	<td>{{vm.starDetail.first_name}}</td>
+	        </tr>
+	        <tr>
+	          	<th>Last Name</th>
+	          	<td>{{vm.starDetail.last_name}}</td>
+	        </tr>
+	        <tr>
+	          	<th>Date of Birth</th>
+	          	<td>{{vm.starDetail.dob}}</td>
+	        </tr>
+	      	<tr>
+	          	<th>Movies</th>
+	          	<td>
+	          		<a ng-repeat="m in vm.starDetail.movieList" ng-href="#/DetailPage/{{m.id}}/movie" >{{m.title}}<span ng-if="!$last">, </span></a>
+	          	</td>
+	      	</tr>
+		</table>
+	</div>
+</div>
