@@ -7,12 +7,12 @@
 		
 	<Resource name="jdbc/MasterInstance" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
-		password="asdf" driverClassName="com.mysql.jdbc.ReplicationDriver"
-		url="jdbc:mysql:replication://172.31.72.96:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
+		password="asdf" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://172.31.72.96:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
 		
 	<Resource name="jdbc/SlaveInstance" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
-		password="asdf" driverClassName="com.mysql.jdbc.ReplicationDriver"
-		url="jdbc:mysql:replication//172.31.69.30:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
+		password="asdf" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://172.31.69.30:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
 
 </Context>
