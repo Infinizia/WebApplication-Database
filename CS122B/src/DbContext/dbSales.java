@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import DbModel.Movie;
 import DbModel.Sale;
 
 public class dbSales extends dbContext{
@@ -22,13 +21,11 @@ public class dbSales extends dbContext{
 	{
 		try {
 			int count = 0;
-			PreparedStatement ps = sqlConnection.prepareStatement(String.format("insert into %s (customer_id, movie_id, sale_date) values (?, ?,CURDATE());",
-					this.tableName));			
+			String insertAllQuery = "";
 			for(int i = 0; i < sales.size(); ++i) {
-				ps.setInt(1, sales.get(i).getCustomer_id());
-				ps.setInt(2, sales.get(i).getMovie_id());
-				ps.executeBatch();
-				ps.clearBatch();
+				insertAllQuery = String.format("insert into %s (customer_id, movie_id, sale_date) values (%s,%s,CURDATE());",
+												this.tableName, sales.get(i).getCustomer_id(), sales.get(i).getMovie_id());
+				count += super.ExecuteUpdate(insertAllQuery);
 			}
 			ps.close();
 			return count;
