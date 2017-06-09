@@ -27,7 +27,8 @@ public class dbSales extends dbContext{
 			for(int i = 0; i < sales.size(); ++i) {
 				ps.setInt(1, sales.get(i).getCustomer_id());
 				ps.setInt(2, sales.get(i).getMovie_id());
-				ps.executeUpdate();
+				ps.executeBatch();
+				ps.clearBatch();
 			}
 			ps.close();
 			return count;
