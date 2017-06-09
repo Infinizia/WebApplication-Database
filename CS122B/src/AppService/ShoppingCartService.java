@@ -15,8 +15,8 @@ public class ShoppingCartService {
 	private dbSales sales = null;
 	
 	public ShoppingCartService() {
-		cards = new dbCreditcards();
-		sales = new dbSales();
+		cards = new dbCreditcards("master");
+		sales = new dbSales("master");
 	}
 	
 	public int checkout(Customer customer, ShoppingCart cart, Creditcard card) {
