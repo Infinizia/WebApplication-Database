@@ -1,24 +1,61 @@
 package DbContext;
 import java.sql.*;
 
+import com.mysql.jdbc.ReplicationDriver;
+import com.sun.xml.internal.fastinfoset.sax.Properties;
+
 
 public final class dbConnection {
 	
 	private static Connection appDbConnection = null;
-	private static String myLogin = "johnm";
-	private static String myPass = "asdfasdf123";
+	private static Connection masterConnection = null;
+	private static Connection slaveConnection = null;
+	private static String myLogin = "root";
+	private static String myPass = "nguyen";
 	private static String myUrl = "jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&useSSL=false";
 	private static String driverName = "com.mysql.jdbc.Driver";
 	
 	public static boolean SetConnection(String username, String password){
 		try{
-			if(appDbConnection == null){
+
 				 Class.forName(driverName).newInstance();
+			//Database connection pooling
+			Context initCtx = new InitialContext();
+            if (initCtx == null)
+                System.out.println("initCtx is NULL");
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                System.out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/DbConnection");
+            DataSource dataSourceMaster = (DataSource) envCtx.lookup("jdbc/MasterInstance");
+            DataSource dataSourceSlave = (DataSource) envCtx.lookup("jdbc/SlaveInstance");
+            
+            if (ds == null)
+                System.out.println("ds is null.");
+            
+            masterConnection = dataSourceMaster.getConnection();
+            slaveConnection = dataSourceSlave.getConnection();
+            appDbConnection = ds.getConnection();
+            
 				 
 				 if(username != null && !username.isEmpty() && password != null && !password.isEmpty()){
 					 appDbConnection = DriverManager.getConnection(myUrl, username, password); 
 				 }				
 			}
+            if (appDbConnection == null)
+                System.out.println("dbcon is null.");
+            
+//			Uncomment this to do db connection without pooling            	
+//			if(appDbConnection == null){
+//				 Class.forName(driverName).newInstance();
+//				 
+//				 if(username != null && !username.isEmpty() && password != null && !password.isEmpty()){
+//					 appDbConnection = DriverManager.getConnection(myUrl, username, password); 
+//				 }				
+//			}
 			return true;
 		}
 		catch(Exception e){
