@@ -3,10 +3,19 @@ package DbContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.ReplicationDriver;
+
 import DbModel.Movie;
 import DbModel.Star;
 
@@ -89,7 +98,7 @@ public class dbStars extends dbContext {
 		}
 	}
 	
-	public int InsertStar(Star s){		
+	public int InsertStar(Star s){
 		try{
 			//Determine if the star already exists in the database
 			String selectQuery = String.format("select * from %s where stars.first_name = \"%s\" and stars.last_name = \"%s\" ",
@@ -104,7 +113,7 @@ public class dbStars extends dbContext {
 				String insertQuery = String.format("insert into %s (%s, %s) values('%s', '%s')", 
 						this.tableName, dbStars.first_name_col, dbStars.last_name_col,
 						s.getFirst_name(), s.getLast_name());
-
+				
 				return super.ExecuteUpdate(insertQuery);
 			}
 		}

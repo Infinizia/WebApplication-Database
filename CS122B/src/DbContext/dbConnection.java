@@ -5,10 +5,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.mysql.jdbc.ReplicationDriver;
+import com.sun.xml.internal.fastinfoset.sax.Properties;
+
 
 public final class dbConnection {
 	
 	private static Connection appDbConnection = null;
+	private static Connection masterConnection = null;
+	private static Connection slaveConnection = null;
 	private static String myLogin = "root";
 	private static String myPass = "nguyen";
 	private static String myUrl = "jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&useSSL=false";
@@ -16,6 +21,7 @@ public final class dbConnection {
 	
 	public static boolean SetConnection(String username, String password){
 		try{
+
 			//Database connection pooling
 			Context initCtx = new InitialContext();
             if (initCtx == null)
@@ -27,11 +33,16 @@ public final class dbConnection {
 
             // Look up our data source
             DataSource ds = (DataSource) envCtx.lookup("jdbc/DbConnection");
-
+            DataSource dataSourceMaster = (DataSource) envCtx.lookup("jdbc/MasterInstance");
+            DataSource dataSourceSlave = (DataSource) envCtx.lookup("jdbc/SlaveInstance");
+            
             if (ds == null)
                 System.out.println("ds is null.");
-
+            
+            masterConnection = dataSourceMaster.getConnection();
+            slaveConnection = dataSourceSlave.getConnection();
             appDbConnection = ds.getConnection();
+            
             if (appDbConnection == null)
                 System.out.println("dbcon is null.");
             

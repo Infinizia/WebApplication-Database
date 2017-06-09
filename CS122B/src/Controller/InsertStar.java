@@ -1,11 +1,18 @@
 package Controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+import com.mysql.jdbc.Connection;
 
 import AppService.JsonService;
 import AppService.ResponseService;
@@ -33,7 +40,7 @@ public class InsertStar extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Star star = (Star)JsonService.GetObjectFromJson(request.getParameter("star"), Star.class);
 		dbStars dbs = new dbStars();
-		
+
 		int statusCheck = dbs.InsertStar(star);
 		if (statusCheck != -1)
 			ResponseService.SendJson(response, "success");
