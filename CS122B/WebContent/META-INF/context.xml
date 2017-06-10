@@ -1,16 +1,16 @@
-<Context path="/Login">
+<Context path="/DBLogin">
 
 	<Resource name="jdbc/DbConnection" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
 		password="asdf" driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
 		
-	<Resource name="jdbc/MasterInstance" auth="Container" type="javax.sql.DataSource"
+	<Resource name="jdbc/DbMasterConnection" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
 		password="asdf" driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://172.31.72.96:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
 		
-	<Resource name="jdbc/SlaveInstance" auth="Container" type="javax.sql.DataSource"
+	<Resource name="jdbc/DbSlaveConnection" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
 		password="asdf" driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://172.31.69.30:3306/moviedb?autoReconnect=true&amp;useSSL=false" />

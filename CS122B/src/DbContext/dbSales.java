@@ -21,6 +21,7 @@ public class dbSales extends dbContext{
 	
 	public ArrayList<Sale> GetSalesByCustomerId(int id){
 		try{
+			dbContext saleConnection = new dbContext("");
 			String selectAllQuery = String.format("select * from %s where %s = %d", this.tableName, dbSales.customer_id_col, id);
 			PreparedStatement ps = sqlConnection.prepareStatement(selectAllQuery);
 			ResultSet r = ps.executeQuery();
@@ -35,6 +36,9 @@ public class dbSales extends dbContext{
 
 		    	allSales.add(sale);
 		    }
+		    r.close();
+		    ps.close();
+		    sqlConnection.close();
 		    return allSales;
 		}
 		catch(Exception e){
@@ -47,13 +51,17 @@ public class dbSales extends dbContext{
 	{
 		try {
 			int count = 0;
+			dbContext saleConnection = new dbContext("master");
 			PreparedStatement ps = sqlConnection.prepareStatement(String.format("insert into %s (customer_id, movie_id, sale_date) values (?, ?,CURDATE());",
 					this.tableName));			
 			for(int i = 0; i < sales.size(); ++i) {
 				ps.setInt(1, sales.get(i).getCustomer_id());
 				ps.setInt(2, sales.get(i).getMovie_id());
 				ps.executeUpdate();
+				count++;
 			}
+			ps.close();
+			sqlConnection.close();
 			return count;
 		}
 		catch (Exception e) {

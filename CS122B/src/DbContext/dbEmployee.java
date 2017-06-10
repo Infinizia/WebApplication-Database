@@ -31,6 +31,8 @@ public class dbEmployee extends dbContext {
 		    	emp.password = r.getString(password_col);
 		    	emp.fullname = r.getString(fullname_col);
 		    }
+		    r.close();
+		    ps.close();
 		    return emp;
 		}
 		catch(Exception e){

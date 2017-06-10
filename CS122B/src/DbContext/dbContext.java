@@ -38,7 +38,9 @@ public class dbContext{
 	protected int ExecuteUpdate(String updateQuery){
 		try{
 			 Statement select = sqlConnection.createStatement();
-			 return select.executeUpdate(updateQuery);
+			 int i = select.executeUpdate(updateQuery);
+			 select.close();
+			 return i;
 		}
 		catch(Exception e){
 			System.out.println("Could not execute update");
@@ -51,6 +53,7 @@ public class dbContext{
 		Metadata db = new Metadata();
 		ArrayList<Metadata> dataList = new ArrayList<Metadata>();
 		try{
+			System.out.println(sqlConnection);
 			DatabaseMetaData md = sqlConnection.getMetaData();
 			ResultSet rs = md.getTables(null,null,"%",null);
 			while(rs.next())
@@ -72,9 +75,12 @@ public class dbContext{
 				}
 				dataList.add(db);
 			}
+			rs.close();
+			sqlConnection.close();
 		}
 		catch(Exception e){
 			System.out.println("Failed to print meta data");
+			e.printStackTrace();
 		}
 		return dataList;
 		

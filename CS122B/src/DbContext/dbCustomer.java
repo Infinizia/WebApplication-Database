@@ -64,6 +64,8 @@ public class dbCustomer extends dbContext{
 		    	cust.setEmail(r.getString(dbCustomer.email_col));
 		    	cust.setPassword(r.getString(dbCustomer.password_col));
 		    }
+		    r.close();
+		    ps.close();
 		    return cust;
 		}
 		catch(Exception e){

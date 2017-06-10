@@ -106,7 +106,10 @@ public class dbStars extends dbContext {
 			
 			ResultSet rs = super.ExecuteQuery(selectQuery);
 			if (rs.next())
+			{
+				rs.close();
 				return -1;
+			}
 			else
 			{	
 				//If not, then insert new star to the database
