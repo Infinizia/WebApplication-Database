@@ -1,0 +1,27 @@
+Task 1: Connection Pooling and Prepared Statements
+- The database connection configurations is located on the \META-INF\context.xml.
+
+- We added the database connection pooling code in the DbContext/dbConnection.java file.
+  In the dbConnection.java file, when a request is needed for DB connection, it will open
+  a connection by using the DataSource object to get the database connection from the backend server.
+
+- In the \WEB-INF\web.xml, the resource-ref tag is used to allow the  dbConnection.java file to
+  pull the information from the context.xml file.
+
+
+
+Task 2: Scaling Fabflix
+- For this task, we added two new resources in the context.xml file, then we retreived the data
+  in the dbConnection.java by creating two DataSource object. One DataSource object is for the master sql connection.
+  The other DataSource object is for the slave sql connection.
+- For every request made, the master and slave database connection is chosen based on a random generator. 
+  However, whenever a write request is needed, we set the request to choose the master database connection.
+
+
+Task 3: Measuring the performance of Fabflix search feature
+
+
+1. How/where you use connection pooling in your code(Task1)
+2. Explain how to use connection pooling in the case of having two backend servers(Task2)
+3. Codebase time measurement & JMeter results(3.1-3.3)
+
