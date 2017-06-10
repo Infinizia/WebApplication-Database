@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import AppService.JsonService;
 import AppService.ResponseService;
 import DbContext.dbFullText;
@@ -37,21 +40,11 @@ public class FullTextSearch extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Search request received");
+		Logger logger = LogManager.getLogger("mainLogger");
+		long startTime = System.nanoTime();
+		
+		
 		String searchText = request.getParameter("searchText");
-		if (searchText == null)
-		{
-			InputStream is = request.getInputStream();
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-	        String line = "";
-	        StringBuffer buffer = new StringBuffer();
-	        while ((line = reader.readLine()) != null)
-	        {
-	            buffer.append(line);
-	        }
-	        searchText = buffer.toString();
-		}
-		System.out.println(searchText);
 		String[] text = searchText.split(" ");
 		StringBuilder searchQuery = new StringBuilder();
 		
@@ -67,8 +60,9 @@ public class FullTextSearch extends HttpServlet {
 		}
 		
 		dbFullText ftDb= new dbFullText("");
-		ArrayList<MovieTitleSearch> movieList = ftDb.GetMovie(searchQuery.toString());
-		System.out.println("Search result " + movieList.size());
+		ArrayList<MovieTitleSearch> movieList = ftDb.GetMovie(logger, searchQuery.toString());
+		long endTime = System.nanoTime();
+		logger.debug(String.format("TS_MEASURE:%d", endTime - startTime));
 		ResponseService.SendJson(response, movieList);
 	}
 

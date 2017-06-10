@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.Logger;
+
 import DbModel.MovieTitleSearch;
 
 
@@ -16,10 +18,11 @@ public class dbFullText extends dbContext {
 		this.tableName = "employees";
 	}
 	
-	public ArrayList<MovieTitleSearch> GetMovie(String searchTextQuery){
+	public ArrayList<MovieTitleSearch> GetMovie(Logger logger, String searchTextQuery){
 
 		try{
 			String selectQuery = String.format("select * from ft where match(entry) against('%s' in boolean mode)", searchTextQuery);
+			long startTime = System.nanoTime();
 			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
 			ResultSet r = ps.executeQuery();
 			ArrayList<MovieTitleSearch> movieList = new ArrayList<MovieTitleSearch>();
@@ -31,6 +34,8 @@ public class dbFullText extends dbContext {
 		    	movie.title = r.getString(entry_col);
 		    	movieList.add(movie);
 		    }
+			long endTime = System.nanoTime();
+			logger.debug(String.format("TJ_MEASURE:%d", endTime - startTime));
 			return movieList;
 		}
 		catch(Exception e){
