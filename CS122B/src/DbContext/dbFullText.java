@@ -23,8 +23,9 @@ public class dbFullText extends dbContext {
 		try{
 			String selectQuery = String.format("select * from ft where match(entry) against('%s' in boolean mode)", searchTextQuery);
 			long startTime = System.nanoTime();
-			PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
-			ResultSet r = ps.executeQuery();
+			//PreparedStatement ps = sqlConnection.prepareStatement(selectQuery);
+			//ResultSet r = ps.executeQuery();
+			ResultSet r = super.ExecuteQuery(selectQuery);
 			ArrayList<MovieTitleSearch> movieList = new ArrayList<MovieTitleSearch>();
 			
 		    while (r.next())
@@ -35,7 +36,7 @@ public class dbFullText extends dbContext {
 		    	movieList.add(movie);
 		    }
 		    r.close();
-		    ps.close();
+		    //ps.close();
 			long endTime = System.nanoTime();
 			logger.debug(String.format("TJ_MEASURE:%d", endTime - startTime));
 			return movieList;
