@@ -34,6 +34,8 @@ public class dbFullText extends dbContext {
 		    	movie.title = r.getString(entry_col);
 		    	movieList.add(movie);
 		    }
+		    r.close();
+		    ps.close();
 			long endTime = System.nanoTime();
 			logger.debug(String.format("TJ_MEASURE:%d", endTime - startTime));
 			return movieList;

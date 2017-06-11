@@ -63,6 +63,7 @@ public class FullTextSearch extends HttpServlet {
 		ArrayList<MovieTitleSearch> movieList = ftDb.GetMovie(logger, searchQuery.toString());
 		long endTime = System.nanoTime();
 		logger.debug(String.format("TS_MEASURE:%d", endTime - startTime));
+		ftDb.Close();
 		ResponseService.SendJson(response, movieList);
 	}
 

@@ -34,7 +34,14 @@ public class dbContext{
 			return null;
 		}
 	}
-	
+	public void Close(){
+		try {
+			sqlConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	protected int ExecuteUpdate(String updateQuery){
 		try{
 			 Statement select = sqlConnection.createStatement();
